@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "hangashore",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --project .",
+    "start": "npm run build && electron ."
+  },
+  "devDependencies": {
+    "@types/electron": "1.4.25",
+    "electron": "1.4.4",
+    "typescript": "2.0.6"
+  }
+}
