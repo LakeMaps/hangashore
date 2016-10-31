@@ -8,7 +8,6 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "dist",
         "strictNullChecks": true,
         "target": "es5"
     }

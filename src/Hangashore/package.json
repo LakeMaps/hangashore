@@ -2,7 +2,7 @@
   "private": true,
   "name": "hangashore",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "tsc --project .",
     "start": "npm run build && electron ."
