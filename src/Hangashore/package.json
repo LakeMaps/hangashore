@@ -7,6 +7,13 @@
     "build": "tsc --project .",
     "start": "npm run build && electron ."
   },
+  "dependencies": {
+    "@cycle/dom": "14.0.0",
+    "@cycle/rx-run": "7.0.1",
+    "@types/rx": "2.5.33",
+    "rx": "4.1.0",
+    "xstream": "7.0.0"
+  },
   "devDependencies": {
     "@types/electron": "1.4.25",
     "electron": "1.4.4",

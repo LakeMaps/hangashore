@@ -1,6 +1,11 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "es6"
+        ],
         "module": "commonjs",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
@@ -9,6 +14,6 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strictNullChecks": true,
-        "target": "es5"
+        "target": "es6"
     }
 }
