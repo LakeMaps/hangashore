@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project .",
+    "build": "tsc --pretty --project .",
     "start": "npm run build && electron ."
   },
   "dependencies": {
