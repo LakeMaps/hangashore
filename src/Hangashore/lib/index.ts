@@ -3,5 +3,5 @@ import {makeDOMDriver} from '@cycle/dom';
 import {App} from './App';
 
 run(App, {
-    DOM: makeDOMDriver(`#app`)
+    dom: makeDOMDriver(`#app`)
 });

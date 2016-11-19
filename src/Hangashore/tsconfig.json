@@ -5,7 +5,6 @@
         "inlineSourceMap": true,
         "lib": [
             "dom",
-            "dom.iterable",
             "es6"
         ],
         "module": "commonjs",
