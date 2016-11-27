@@ -1,4 +1,5 @@
 import {VNode} from '@cycle/dom';
+import {html} from 'hypercycle';
 import {Observable} from 'rx';
 
 import {Header} from './components/Header';
@@ -6,7 +7,6 @@ import {Bar} from './components/Bar';
 import {Map} from './components/Map';
 import {ButtonPanel} from './components/ButtonPanel';
 import {InfoPanel} from './components/InfoPanel';
-import {html} from 'hypercycle';
 import {Status} from './components/Status';
 import {Constants} from '../constants';
 

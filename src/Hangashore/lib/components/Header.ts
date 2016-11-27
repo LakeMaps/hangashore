@@ -1,9 +1,9 @@
 import {VNode} from '@cycle/dom';
-import {Observable} from 'rx';
 import {html} from 'hypercycle';
+import {Observable} from 'rx';
 
 export type Sources = {
-    props$: Observable<string>
+    props$: Observable<string>,
 };
 
 export type Sinks = {
@@ -19,6 +19,6 @@ const view = (name: string): VNode => html`
 export function Header(sources: Sources): Sinks {
     const vtree$ = sources.props$.map(view);
     return {
-        dom: vtree$
-    }
+        dom: vtree$,
+    };
 }

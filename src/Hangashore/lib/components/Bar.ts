@@ -1,12 +1,12 @@
 import {VNode} from '@cycle/dom';
-import {Observable} from 'rx';
 import {html} from 'hypercycle';
+import {Observable} from 'rx';
 
 export type Sources = {
     props: {
         name: string,
         vtree$: Observable<VNode>[],
-    }
+    },
 };
 
 export type Sinks = {
@@ -27,6 +27,6 @@ export function Bar(sources: Sources): Sinks {
         </div>
     `);
     return {
-        dom: vtree$
-    }
+        dom: vtree$,
+    };
 }

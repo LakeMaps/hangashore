@@ -1,6 +1,6 @@
 import {VNode} from '@cycle/dom';
-import {Observable} from 'rx';
 import {html} from 'hypercycle';
+import {Observable} from 'rx';
 
 export type InfoPanelProps = {
     title: string,
@@ -32,6 +32,6 @@ const view = (props: InfoPanelProps): VNode => html`
 export function InfoPanel(sources: Sources): Sinks {
     const vtree$ = sources.props$.map(view);
     return {
-        dom: vtree$
+        dom: vtree$,
     };
 }

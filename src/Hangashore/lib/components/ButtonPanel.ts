@@ -1,6 +1,6 @@
 import {VNode} from '@cycle/dom';
-import {Observable} from 'rx';
 import {html} from 'hypercycle';
+import {Observable} from 'rx';
 
 export type ButtonPanelProps = {
     name: string,

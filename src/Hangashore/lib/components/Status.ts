@@ -25,6 +25,6 @@ const view = (props: StatusProps): VNode => html`
 export function Status(sources: Sources): Sinks {
     const vtree$ = sources.props$.map(view);
     return {
-        dom: vtree$
+        dom: vtree$,
     }
 }
