@@ -14,12 +14,15 @@
     "@types/rx": "2.5.33",
     "hypercycle": "2.0.1",
     "lodash": "4.16.6",
+    "microcontrollers-sdk": "0.10.0",
+    "protocol-buffers": "3.2.1",
     "rx": "4.1.0",
     "xstream": "8.0.0"
   },
   "devDependencies": {
     "@types/electron": "1.4.25",
     "electron": "1.4.4",
+    "electron-rebuild": "1.4.0",
     "tachyons": "4.5.3",
     "typescript": "2.1.1"
   }

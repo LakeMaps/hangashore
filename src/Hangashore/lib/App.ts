@@ -1,4 +1,5 @@
 import {VNode} from '@cycle/dom';
+import {DOMSource} from '@cycle/dom/rx-typings';
 import {html} from 'hypercycle';
 import {Observable} from 'rx';
 
@@ -9,9 +10,16 @@ import {ButtonPanel} from './components/ButtonPanel';
 import {InfoPanel} from './components/InfoPanel';
 import {Status} from './components/Status';
 import {Constants} from '../constants';
+import {Motion} from './values/Motion';
+
+export type Sources = {
+    dom: DOMSource,
+    gamepad: Observable<Gamepad>,
+};
 
 export type Sinks = {
-    dom: Observable<VNode>
+    dom: Observable<VNode>,
+    wireless: Observable<Motion>,
 };
 
 const view = (size: {x: number, y: number}) =>
@@ -32,7 +40,7 @@ const view = (size: {x: number, y: number}) =>
         </div>
     `;
 
-export function App(): Sinks {
+export function App({gamepad}: Sources): Sinks {
     const size$ = Observable.fromEvent(<any> window, `resize`)
         .map(event => <Window> (<any> event).target)
         .startWith(window)
@@ -141,7 +149,10 @@ export function App(): Sinks {
     });
     const components = [header, buttonPanel, locationInfo, missionInfo, map, statusBar];
     const vtree$ = size$.flatMap(size => Observable.combineLatest(components.map(component => component.dom), view(size)));
+    // TODO: buttons 6 and 7 need to be combined in a smarter way to handle simultaneous presses
+    const motion$ = gamepad.filter(x => x !== undefined).map(g => new Motion(g.buttons[7].value - g.buttons[6].value, g.axes[0]));
     return {
         dom: vtree$,
+        wireless: motion$,
     };
 }
