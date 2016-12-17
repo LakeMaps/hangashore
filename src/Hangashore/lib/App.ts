@@ -150,7 +150,7 @@ export function App({gamepad}: Sources): Sinks {
     const components = [header, buttonPanel, locationInfo, missionInfo, map, statusBar];
     const vtree$ = size$.flatMap(size => Observable.combineLatest(components.map(component => component.dom), view(size)));
     // TODO: buttons 6 and 7 need to be combined in a smarter way to handle simultaneous presses
-    const motion$ = gamepad.filter(x => x !== undefined).map(g => new Motion(g.buttons[7].value - g.buttons[6].value, g.axes[0]));
+    const motion$ = gamepad.filter(x => x !== undefined).map(g => new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]));
     return {
         dom: vtree$,
         wireless: motion$,
