@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "electron-packager": "electron-packager"
+  },
+  "devDependencies": {
+    "electron-packager": "8.4.0",
+    "typescript": "2.1.1"
+  }
+}

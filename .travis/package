@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+APPLICATION_DIRECTORY="${APPLICATION_DIRECTORY:-src/Hangashore/}"
+APPLICATION_NAME="${APPLICATION_NAME:-Hangashore}"
+APPLICATION_OUTPUT_DIRECTORY="${APPLICATION_OUTPUT_DIRECTORY:-build/}"
+
+npm install
+npm run electron-packager -- "$APPLICATION_DIRECTORY" "$APPLICATION_NAME" \
+	--out "$APPLICATION_OUTPUT_DIRECTORY" \
+	--overwrite \
+	--asar
+rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSE
+rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSES.chromium.html
+rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/version

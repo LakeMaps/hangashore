@@ -11,12 +11,16 @@ addons:
 matrix:
     include:
         - node_js: "6"
+          os: linux
           env:
               - CXX=g++-4.8
+        - node_js: "6"
+          os: osx
 install:
-    - make get-deps
+    - .travis/install
 script:
-    - make
+    - .travis/compile
+    - .travis/package
 
 notifications:
     email: false
