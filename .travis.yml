@@ -13,9 +13,6 @@ matrix:
         - node_js: "6"
           env:
               - CXX=g++-4.8
-        - node_js: "7"
-          env:
-              - CXX=g++-4.8
 install:
     - make get-deps
 script:
