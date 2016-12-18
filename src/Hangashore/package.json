@@ -24,6 +24,6 @@
     "@types/rx": "2.5.33",
     "electron": "1.4.4",
     "electron-rebuild": "1.4.0",
-    "typescript": "2.1.1"
+    "typescript": "2.1.4"
   }
 }
