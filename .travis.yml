@@ -21,6 +21,16 @@ install:
 script:
     - .travis/compile
     - .travis/package
+deploy:
+    provider: releases
+    api_key:
+        secure: N12jY9VTdYsuw+w875tO04Kmn9pKJObc3r62c2UllJr2JzfO/JG2+SMKkdDM1sq9x/LO3zM/zqGEoYw2v0JAhACLrj+oHA27P7iK0+pUYAuS38blwMWfeFnmVx/lGITuwoqU4dYzHwXkQ/bx63ZhwB+ngbftEvHXZt7/vBlmwTlApoR4ClPwsSBdYlNbA+pAj8ZwosgDDWVXytWMmNWyRNYez0MoVZ7gG5UD5kg0ozm/l5L4s6Gmvw+HkxgSU2VxEL1qurBQ3gbiLZ9ABdmCMqlAZ2XGv0arjNSMiYkoD8CP6AMwROOsP/BkjUNl3/ESqrc97Hu7UmEXUGByPBd/0oRMmdYoorv1+OFpXKn9QEvdOjiKhMezRxcK5aw1Pdy7a6S7uldWEEqVFK6xKu8oFh6FPC9Se8cHmQklq1R7xwGYKQyzEl/XhlZqXpVv7iExEklP7Sg/Qiixop9n5+8io2xx7p9fTOxWfzcXzSWpmaRviiAXPGQAUVeCj00QSPd+dmEF/8yPYhb99AspWfCwuU8jCFxZgwDDcsLe6pMgU3mr5t2bRS6KXZjm3IYssNufo1Rwpf7HjAtMskhgDDy8zegrsdR5SfRf3765wZnPODikJc0hgXiXxTjjpqUah7b1pQCa9xjCfRhp/PfuvS6shk74dzga9MbGX1WQudpVrTk=
+    file_glob: true
+    file:
+        - "build/*.tgz"
+    skip_cleanup: true
+    on:
+        tags: true
 
 notifications:
     email: false

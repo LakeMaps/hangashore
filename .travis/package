@@ -16,3 +16,6 @@ npm run electron-packager -- "$APPLICATION_DIRECTORY" "$APPLICATION_NAME" \
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSE
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSES.chromium.html
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/version
+
+PLATFORM="$(uname | awk '{print tolower($0)}')"
+( cd "$APPLICATION_OUTPUT_DIRECTORY" && tar -czf "${APPLICATION_NAME}-${PLATFORM}.tgz" ./*/ )
