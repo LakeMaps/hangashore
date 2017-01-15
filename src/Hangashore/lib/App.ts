@@ -53,25 +53,25 @@ export function App({gamepad}: Sources): Sinks {
     });
     const statuses = [{
         name: `Battery`,
-        value: `12.3 V`,
+        value: Observable.just(`12.3 V`),
     }, {
         name: `Power Use`,
-        value: `46 W`
+        value: Observable.just(`46 W`)
     }, {
         name: `Throttle`,
-        value: `90%`
+        value: Observable.just(`90%`)
     }, {
         name: `Steering`,
-        value: `+5°`
+        value: Observable.just(`+5°`)
     }, {
         name: `Air Temp`,
-        value: `21 °C`
+        value: Observable.just(`21 °C`)
     }, {
         name: `Water Temp`,
-        value: `16 °C`
+        value: Observable.just(`16 °C`)
     }, {
         name: `Connection`,
-        value: `Established`
+        value: Observable.just(`Established`)
     }];
     const statusBar = Bar({
         props: {
