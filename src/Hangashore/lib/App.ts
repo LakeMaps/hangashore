@@ -97,22 +97,22 @@ export function App({gamepad}: Sources): Sinks {
             title: `Location Information`,
             entries: [{
                 key: `Latitude`,
-                value: `49.201325°`
+                value: Observable.just(`49.201325°`)
             }, {
                 key: `Longitude`,
-                value: `-57.053745°`
+                value: Observable.just(`-57.053745°`)
             }, {
                 key: `Speed`,
-                value: `2.7 m/s`
+                value: Observable.just(`2.7 m/s`)
             }, {
                 key: `Heading`,
-                value: `56°`
+                value: Observable.just(`56°`)
             }, {
                 key: `Elevation`,
-                value: `87 m`
+                value: Observable.just(`87 m`)
             }, {
                 key: `HDOP`,
-                value: `6`
+                value: Observable.just(`6`)
             }]
         })
     });
@@ -121,22 +121,22 @@ export function App({gamepad}: Sources): Sinks {
             title: `Mission Information`,
             entries: [{
                 key: `Current Depth`,
-                value: `4.09 m`
+                value: Observable.just(`4.09 m`)
             }, {
                 key: `Distance Covered`,
-                value: `1670 m`
+                value: Observable.just(`1670 m`)
             }, {
                 key: `Distance Left`,
-                value: `1370 m`
+                value: Observable.just(`1370 m`)
             }, {
                 key: `Elapsed Time`,
-                value: `00:34:15`
+                value: Observable.just(`00:34:15`)
             }, {
                 key: `ETA Completion`,
-                value: `00:27:56`
+                value: Observable.just(`00:27:56`)
             }, {
                 key: `File Size`,
-                value: `13567K`
+                value: Observable.just(`13567K`)
             }]
         })
     });

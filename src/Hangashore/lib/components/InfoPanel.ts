@@ -2,9 +2,14 @@ import {VNode} from '@cycle/dom';
 import {html} from 'hypercycle';
 import {Observable} from 'rx';
 
+export type InfoPanelPropsEntry = {
+    key: string,
+    value: Observable<string>
+}
+
 export type InfoPanelProps = {
     title: string,
-    entries: {key: string, value: string}[],
+    entries: InfoPanelPropsEntry[],
 };
 
 export type Sources = {
@@ -15,22 +20,31 @@ export type Sinks = {
     dom: Observable<VNode>,
 };
 
-const view = (props: InfoPanelProps): VNode => html`
-    <div class="flex-col box box--rounded info">
-        <h3>${props.title}</h3>
-        <table class="flex-col info__table">
-            ${props.entries.map(entry => html`
-                <tr>
-                    <td>${entry.key}</td>
-                    <td>${entry.value}</td>
-                </tr>
-            `)}
-        </table>
-    </div>
-`;
+const viewEntry = (entry: InfoPanelPropsEntry): Observable<VNode> => {
+    return entry.value.map(value => html`
+        <tr>
+            <td>${entry.key}</td>
+            <td>${value}</td>
+        </tr>
+    `);
+};
+
+const view = (props: InfoPanelProps): Observable<VNode> => {
+    const entryView$s = props.entries.map(viewEntry);
+    return Observable.combineLatest(entryView$s, (...entryViews: VNode[]) => {
+        return html`
+            <div class="flex-col box box--rounded info">
+                <h3>${props.title}</h3>
+                <table class="flex-col info__table">
+                    ${entryViews}
+                </table>
+            </div>
+        `;
+    });
+};
 
 export function InfoPanel(sources: Sources): Sinks {
-    const vtree$ = sources.props$.map(view);
+    const vtree$ = sources.props$.flatMap(view);
     return {
         dom: vtree$,
     };
