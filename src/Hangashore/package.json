@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --pretty --project .",
+    "electron-rebuild": "find node_modules -type f -name '*.node' -delete && electron-rebuild",
     "start": "npm run build && electron .",
     "test": "npm run build && tape test/**/*.js | tap-spec"
   },
