@@ -40,6 +40,12 @@ export class WirelessLinkMicrocontroller {
         this._send = send;
     }
 
+    reset() {
+        return this._send(new Message(0x00, Buffer.alloc(1)).buffer()).then(_ =>
+            new Promise<Message>((resolve: Resolve<Message>) =>
+                this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
+    }
+
     send(buffer: Buffer): Promise<Message> {
         console.info(`WirelessLinkMicrocontroller#send ${buffer.toString(`hex`)}`);
         return this._send(new Message(0x04, buffer).buffer()).then(_ =>
