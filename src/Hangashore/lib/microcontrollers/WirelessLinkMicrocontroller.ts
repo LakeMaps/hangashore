@@ -47,6 +47,12 @@ export class WirelessLinkMicrocontroller {
                 this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
     }
 
+    recv(): Promise<Message> {
+        return this._send(new Message(0x03, Buffer.alloc(1)).buffer()).then(_ =>
+            new Promise<Message>((resolve: Resolve<Message>) =>
+                this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
+    }
+
     private _parseMessage(state: MessageState, buffer: Buffer, done: Resolve<Message>) {
         this._recv().then(byte => {
             match<MessageState, void>(state,
