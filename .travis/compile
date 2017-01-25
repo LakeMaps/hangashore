@@ -6,3 +6,4 @@ set -o pipefail
 
 cd src/Hangashore/
 npm run build
+npm test
