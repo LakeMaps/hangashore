@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc --pretty --project .",
     "electron-rebuild": "find node_modules -type f -name '*.node' -delete && electron-rebuild",
+    "lint": "tslint --format verbose --project .",
     "start": "npm run build && electron .",
     "test": "npm run build && tape test/**/*.js | tap-spec"
   },
@@ -32,6 +33,7 @@
     "electron-rebuild": "1.4.0",
     "tap-spec": "4.1.1",
     "tape": "4.6.3",
+    "tslint": "4.4.2",
     "typescript": "2.1.5"
   }
 }
