@@ -1,5 +1,5 @@
 import * as test from 'tape';
-import {Message} from "../../lib/microcontrollers";
+import {Message} from '../../lib/microcontrollers';
 
 test(`Message#buffer returns correct bytes`, (t) => {
     t.plan(1);

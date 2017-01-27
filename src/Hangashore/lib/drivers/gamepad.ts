@@ -1,10 +1,9 @@
-import {Observable, Disposable, Observer} from 'rx';
+import {Disposable, Observable, Observer} from 'rx';
 
 const makeGamepadDriver = (id?: string) => () => Observable.create((observer: Observer<Gamepad>) => {
     let raf = window.requestAnimationFrame(function loop() {
         const gamepads = navigator.getGamepads();
-        for (let i = 0; i < gamepads.length; i++) {
-            const gamepad = gamepads[i];
+        for (const gamepad of gamepads) {
             if (gamepad === undefined) {
                 continue;
             }

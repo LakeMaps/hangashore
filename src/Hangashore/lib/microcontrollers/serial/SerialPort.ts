@@ -11,7 +11,7 @@ export class SerialPort {
     constructor(port: string, baudRate: number = 115200) {
         this._port = new NodeSerialPort(port, {
             baudRate,
-            parser: this._parser()
+            parser: this._parser(),
         });
     }
 

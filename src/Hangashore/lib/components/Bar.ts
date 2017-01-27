@@ -5,7 +5,7 @@ import {Observable} from 'rx';
 export type Sources = {
     props: {
         name: string,
-        vtree$: Observable<VNode>[],
+        vtree$: Array<Observable<VNode>>,
     },
 };
 

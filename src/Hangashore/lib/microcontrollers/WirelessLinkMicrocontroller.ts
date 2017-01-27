@@ -1,12 +1,12 @@
-import {match, Case as when, DefaultCase as _} from 'ts-match';
+import {Case as when, DefaultCase as _, match} from 'ts-match';
 
 import {Message} from './Message';
 import {
     MessageState,
-    MessageStateStarted,
+    MessageStateChecksum,
     MessageStateCommand,
     MessageStatePayload,
-    MessageStateChecksum
+    MessageStateStarted,
 } from './MessageState';
 import {SerialPort} from './serial/SerialPort';
 
@@ -19,7 +19,6 @@ const bufferOf = (buffer: Buffer, value: number) =>
 
 export class WirelessLinkMicrocontroller {
     static fromSerialPort(name: string) {
-        console.log(`Using ${name}`);
         const port = new SerialPort(name);
         return new WirelessLinkMicrocontroller(port.recv.bind(port), port.send.bind(port));
     }
@@ -47,7 +46,6 @@ export class WirelessLinkMicrocontroller {
     }
 
     send(buffer: Buffer): Promise<Message> {
-        console.info(`WirelessLinkMicrocontroller#send ${buffer.toString(`hex`)}`);
         return this._send(new Message(0x04, buffer).buffer()).then(_ =>
             new Promise<Message>((resolve: Resolve<Message>) =>
                 this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
@@ -80,7 +78,7 @@ export class WirelessLinkMicrocontroller {
                 when(MessageStatePayload, (_) => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
-                    if (newBuffer.length == (payloadSize + 2)) {
+                    if (newBuffer.length === (payloadSize + 2)) {
                         this._parseMessage(new MessageStateChecksum(), newBuffer, done);
                     } else {
                         this._parseMessage(new MessageStatePayload(), newBuffer, done);
@@ -89,7 +87,7 @@ export class WirelessLinkMicrocontroller {
                 when(MessageStateChecksum, (_) => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
-                    if (newBuffer.length == (payloadSize + 4)) {
+                    if (newBuffer.length === (payloadSize + 4)) {
                         done(Message.from(newBuffer));
                     } else {
                         this._parseMessage(new MessageStateChecksum(), newBuffer, done);
