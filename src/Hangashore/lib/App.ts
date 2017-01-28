@@ -10,11 +10,13 @@ import {Header} from './components/Header';
 import {InfoPanel} from './components/InfoPanel';
 import {Map} from './components/Map';
 import {Status} from './components/Status';
+import {WirelessSource} from './drivers/wireless';
 import {Motion} from './values/Motion';
 
 export type Sources = {
     dom: DOMSource,
     gamepad: Observable<Gamepad>,
+    wireless: WirelessSource,
 };
 
 export type Sinks = {
@@ -40,7 +42,7 @@ const view = (size: {x: number, y: number}) =>
         </div>
     `;
 
-export function App({gamepad}: Sources): Sinks {
+export function App({gamepad, wireless}: Sources): Sinks {
     const size$ = Observable.fromEvent(<any> window, `resize`)
         .map(event => <Window> (<any> event).target)
         .startWith(window)
@@ -70,8 +72,8 @@ export function App({gamepad}: Sources): Sinks {
         name: `Water Temp`,
         value: Observable.just(`16 °C`),
     }, {
-        name: `Connection`,
-        value: Observable.just(`Established`),
+        name: `RSSI`,
+        value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`???`),
     }];
     const statusBar = Bar({
         props: {

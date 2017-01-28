@@ -1,5 +1,5 @@
 import * as test from 'tape';
-import {Message, WirelessLinkMicrocontroller} from '../../lib/microcontrollers';
+import {Message, WirelessLinkMicrocontroller, WirelessLinkReceiveMessage} from '../../lib/microcontrollers';
 
 test(`WirelessLinkMicrocontroller#send does send the correct bytes`, (t) => {
     t.plan(2);
@@ -28,13 +28,13 @@ test(`WirelessLinkMicrocontroller#send does send the correct bytes`, (t) => {
 });
 
 test(`WirelessLinkMicrocontroller#recv does send the correct bytes`, (t) => {
-    t.plan(2);
+    t.plan(4);
 
     const expectedSend = Buffer.concat([
         Buffer.from([0xAA, 0x03, 0x00, 0x2F, 0x0E]),
     ]);
     const expectedRecv = Buffer.concat([
-        Buffer.from([0xAA, 0x03, 0x01]), Buffer.alloc(61).fill(0x42), Buffer.from([0x43, 0x43, 0x5E, 0x18]),
+        Buffer.from([0xAA, 0x03, 0x01]), Buffer.alloc(61).fill(0x42), Buffer.from([0x43, 0x42, 0x5E, 0x18]),
     ]);
 
     let callCount = 0;
@@ -46,9 +46,11 @@ test(`WirelessLinkMicrocontroller#recv does send the correct bytes`, (t) => {
     });
 
     microcontroller.recv()
-        .then((message: Message) => {
+        .then((message: WirelessLinkReceiveMessage) => {
             t.deepEqual(sent, expectedSend);
-            t.deepEqual(message.buffer(), expectedRecv);
+            t.deepEqual(message.containsMessage(), true);
+            t.deepEqual(message.body(), Buffer.alloc(61).fill(0x42));
+            t.deepEqual(message.rssi(), 0x4342);
         })
         .catch(t.fail.bind(t));
 });
