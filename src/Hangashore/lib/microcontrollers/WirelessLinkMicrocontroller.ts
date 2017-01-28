@@ -61,21 +61,21 @@ export class WirelessLinkMicrocontroller {
         this._recv().then(byte => {
             match<MessageState, void>(state,
                 _(),
-                when(MessageStateStarted, (_) => {
+                when(MessageStateStarted, () => {
                     if (byte === 0xAA) {
                         this._parseMessage(new MessageStateCommand(), bufferOf(buffer, byte), done);
                     } else {
                         this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), done);
                     }
                 }),
-                when(MessageStateCommand, (_) => {
+                when(MessageStateCommand, () => {
                     if (this._commands.get(byte)) {
                         this._parseMessage(new MessageStatePayload(), bufferOf(buffer, byte), done);
                     } else {
                         this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), done);
                     }
                 }),
-                when(MessageStatePayload, (_) => {
+                when(MessageStatePayload, () => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
                     if (newBuffer.length === (payloadSize + 2)) {
@@ -84,7 +84,7 @@ export class WirelessLinkMicrocontroller {
                         this._parseMessage(new MessageStatePayload(), newBuffer, done);
                     }
                 }),
-                when(MessageStateChecksum, (_) => {
+                when(MessageStateChecksum, () => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
                     if (newBuffer.length === (payloadSize + 4)) {
