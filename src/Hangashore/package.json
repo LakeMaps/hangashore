@@ -20,7 +20,7 @@
     "rx": "4.1.0",
     "serialport": "4.0.7",
     "tachyons": "4.5.3",
-    "ts-match": "1.0.2",
+    "ts-match": "1.1.0",
     "xstream": "8.0.0"
   },
   "devDependencies": {
