@@ -5,9 +5,7 @@ export class Message {
         return new Message(buffer[1], buffer.slice(2, buffer.length - 2));
     }
 
-    constructor(readonly command: number, readonly payload: Buffer) {
-        // ???
-    }
+    constructor(readonly command: number, readonly payload: Buffer) { /* empty */ }
 
     buffer(): Buffer {
         const msg = Buffer.concat([Buffer.from([0xAA, this.command]), this.payload]);
