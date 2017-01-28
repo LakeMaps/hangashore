@@ -16,6 +16,22 @@ type Send = (bytes: Uint8Array) => Promise<boolean>;
 const bufferOf = (buffer: Buffer, value: number) =>
     Buffer.concat([buffer, Buffer.from([value])]);
 
+export class WirelessLinkReceiveMessage {
+    constructor(private readonly message: Message) { /* empty */ }
+
+    containsMessage() {
+        return this.message.payload[0] === 1;
+    }
+
+    body() {
+        return this.message.payload.slice(1, 62);
+    }
+
+    rssi() {
+        return this.message.payload.readInt16BE(this.message.payload.length - 2);
+    }
+}
+
 export class WirelessLinkMicrocontroller {
     static fromSerialPort(name: string) {
         const port = new SerialPort(name);
@@ -49,8 +65,9 @@ export class WirelessLinkMicrocontroller {
     }
 
     recv() {
-        return this._send(new Message(0x03, Buffer.alloc(1)).buffer()).then(_ =>
-            this._parseMessage(new MessageStateStarted(), Buffer.alloc(0)));
+        return this._send(new Message(0x03, Buffer.alloc(1)).buffer())
+            .then(_ => this._parseMessage(new MessageStateStarted(), Buffer.alloc(0)))
+            .then(m => Promise.resolve(new WirelessLinkReceiveMessage(m)));
     }
 
     private _parseMessage(state: MessageState, buffer: Buffer): Promise<Message> {

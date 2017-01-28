@@ -1,2 +1,2 @@
 export {Message} from './Message';
-export {WirelessLinkMicrocontroller} from './WirelessLinkMicrocontroller';
+export {WirelessLinkReceiveMessage, WirelessLinkMicrocontroller} from './WirelessLinkMicrocontroller';
