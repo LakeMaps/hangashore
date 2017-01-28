@@ -1,7 +1,11 @@
-import {Observable} from 'rx';
+import {Observable, Subject} from 'rx';
 import {WirelessLinkMicrocontroller} from '../microcontrollers';
 
 import {Motion} from '../values/Motion';
+
+export type WirelessSource = {
+    rssi$: Observable<number>,
+};
 
 const protobuf = require(`protocol-buffers`);
 const messages = protobuf(`
@@ -15,8 +19,15 @@ const makeWirelessDriver = (name: string) => {
             surge: data.surge,
             yaw: data.yaw,
         }));
+        const rssi$ = new Subject<number>();
 
-        motion$.subscribe(motion => m.send(Buffer.from(motion)));
+        motion$.subscribe(motion => {
+            m.send(Buffer.from(motion));
+            m.recv().then(response => rssi$.onNext(response.rssi()));
+        });
+        return {
+            rssi$,
+        };
     };
 };
 
