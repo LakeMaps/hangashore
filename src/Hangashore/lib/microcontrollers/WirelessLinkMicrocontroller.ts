@@ -10,7 +10,6 @@ import {
 } from './MessageState';
 import {SerialPort} from './serial/SerialPort';
 
-type Resolve<T> = (value: T) => void;
 type Recv = () => Promise<number>;
 type Send = (bytes: Uint8Array) => Promise<boolean>;
 
@@ -41,59 +40,57 @@ export class WirelessLinkMicrocontroller {
 
     reset() {
         return this._send(new Message(0x00, Buffer.alloc(1)).buffer()).then(_ =>
-            new Promise<Message>((resolve: Resolve<Message>) =>
-                this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
+            this._parseMessage(new MessageStateStarted(), Buffer.alloc(0)));
     }
 
-    send(buffer: Buffer): Promise<Message> {
+    send(buffer: Buffer) {
         return this._send(new Message(0x04, buffer).buffer()).then(_ =>
-            new Promise<Message>((resolve: Resolve<Message>) =>
-                this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
+            this._parseMessage(new MessageStateStarted(), Buffer.alloc(0)));
     }
 
-    recv(): Promise<Message> {
+    recv() {
         return this._send(new Message(0x03, Buffer.alloc(1)).buffer()).then(_ =>
-            new Promise<Message>((resolve: Resolve<Message>) =>
-                this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), resolve)));
+            this._parseMessage(new MessageStateStarted(), Buffer.alloc(0)));
     }
 
-    private _parseMessage(state: MessageState, buffer: Buffer, done: Resolve<Message>) {
-        this._recv().then(byte => {
-            match<MessageState, void>(state,
-                _(),
+    private _parseMessage(state: MessageState, buffer: Buffer): Promise<Message> {
+        const error = new Message(0x0F, Buffer.alloc(<number> this._commands.get(0x0F)));
+        return this._recv().then(byte =>
+            match<MessageState, Promise<Message>>(state,
+                _(() => Promise.reject(error)),
                 when(MessageStateStarted, () => {
                     if (byte === 0xAA) {
-                        this._parseMessage(new MessageStateCommand(), bufferOf(buffer, byte), done);
+                        return this._parseMessage(new MessageStateCommand(), bufferOf(buffer, byte));
                     } else {
-                        this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), done);
+                        return this._parseMessage(new MessageStateStarted(), Buffer.alloc(0));
                     }
                 }),
                 when(MessageStateCommand, () => {
                     if (this._commands.get(byte)) {
-                        this._parseMessage(new MessageStatePayload(), bufferOf(buffer, byte), done);
+                        return this._parseMessage(new MessageStatePayload(), bufferOf(buffer, byte));
                     } else {
-                        this._parseMessage(new MessageStateStarted(), Buffer.alloc(0), done);
+                        return this._parseMessage(new MessageStateStarted(), Buffer.alloc(0));
                     }
                 }),
                 when(MessageStatePayload, () => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
                     if (newBuffer.length === (payloadSize + 2)) {
-                        this._parseMessage(new MessageStateChecksum(), newBuffer, done);
+                        return this._parseMessage(new MessageStateChecksum(), newBuffer);
                     } else {
-                        this._parseMessage(new MessageStatePayload(), newBuffer, done);
+                        return this._parseMessage(new MessageStatePayload(), newBuffer);
                     }
                 }),
                 when(MessageStateChecksum, () => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
                     if (newBuffer.length === (payloadSize + 4)) {
-                        done(Message.from(newBuffer));
+                        return Promise.resolve(Message.from(newBuffer));
                     } else {
-                        this._parseMessage(new MessageStateChecksum(), newBuffer, done);
+                        return this._parseMessage(new MessageStateChecksum(), newBuffer);
                     }
                 }),
-            );
-        });
+            ),
+        );
     }
 }
