@@ -1,5 +1,6 @@
 {
   "private": true,
+  "license": "OSL-3.0",
   "scripts": {
     "electron-packager": "electron-packager"
   },
