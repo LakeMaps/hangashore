@@ -1,10 +1,7 @@
+import {Schema} from './Schema';
+
 export class Motion {
-    static readonly SCHEMA = `
-        message Motion {
-            required float surge = 1;
-            required float yaw = 2;
-        }
-    `;
+    static readonly schema = Schema.of<Motion>(`Motion`);
 
     constructor(readonly surge: number, readonly yaw: number) { /* empty */ }
 }
