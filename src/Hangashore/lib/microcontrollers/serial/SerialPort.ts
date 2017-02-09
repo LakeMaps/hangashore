@@ -6,7 +6,7 @@ type PendingReadResolve = (byte: number) => void;
 export class SerialPort {
     private readonly _port: NodeSerialPort;
 
-    private _pendingReads: PendingReadResolve[];
+    private _pendingReads: PendingReadResolve[] = [];
 
     constructor(port: string, baudRate: number = 115200) {
         this._port = new NodeSerialPort(port, {
