@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import * as NodeSerialPort from 'serialport';
 
-type PendingReadResolve = (byte: number) => {};
+type PendingReadResolve = (byte: number) => void;
 
 export class SerialPort {
     private readonly _port: NodeSerialPort;
