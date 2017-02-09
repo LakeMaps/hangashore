@@ -5,12 +5,12 @@ const protobuf = require(`protocol-buffers`);
 
 export class Schema<T> {
     static of<X>(name: string) {
-        return new Schema<X>(path.join(__dirname, `schemas`, `src`, `${name}.proto`));
+        return new Schema<X>(name, path.join(__dirname, `schemas`, `src`, `${name}.proto`));
     }
 
     private lazySchema: Promise<any>;
 
-    constructor(filename: string) {
+    constructor(name: string, filename: string) {
         this.lazySchema = new Promise((resolve, reject) => {
             fs.readFile(filename, (err, data) => {
                 if (err) {
@@ -18,7 +18,7 @@ export class Schema<T> {
                     return;
                 }
 
-                resolve(protobuf(data));
+                resolve(protobuf(data)[name]);
             });
         });
     }
