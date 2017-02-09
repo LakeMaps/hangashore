@@ -5,7 +5,7 @@ const protobuf = require(`protocol-buffers`);
 
 export class Schema<T> {
     static of<X>(name: string) {
-        return new Schema<X>(path.join(__dirname, `schemas/src/`, name));
+        return new Schema<X>(path.join(__dirname, `schemas`, `src`, `${name}.proto`));
     }
 
     private lazySchema: Promise<any>;
