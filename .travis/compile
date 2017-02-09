@@ -8,3 +8,4 @@ cd src/Hangashore/
 npm -s run lint
 npm -s run build
 npm test
+npm -s run electron-rebuild
