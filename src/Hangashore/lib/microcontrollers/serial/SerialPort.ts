@@ -8,6 +8,8 @@ export class SerialPort {
 
     private _pendingReads: PendingRead[] = [];
 
+    private _buffer = Buffer.alloc(0);
+
     constructor(port: string, baudRate: number = 115200) {
         this._port = new NodeSerialPort(port, {
             baudRate,
@@ -30,24 +32,31 @@ export class SerialPort {
 
     recv(): Promise<number> {
         return new Promise<number>((resolve: PendingRead) => {
-            this._pendingReads.push(resolve);
+            if (!this._buffer.length) {
+                this._pendingReads.push(resolve);
+                return;
+            }
+
+            const nextByte = this._buffer[0];
+
+            this._buffer = this._buffer.slice(1);
+            resolve(nextByte);
         });
     }
 
     _parser() {
-        let data = Buffer.alloc(0);
         return (_: EventEmitter, buffer: Buffer) => {
-            data = Buffer.concat([data, buffer]);
-            while (data.length) {
-                const nextByte = data[0];
+            this._buffer = Buffer.concat([this._buffer, buffer]);
+            while (this._buffer.length) {
+                const nextByte = this._buffer[0];
                 const nextRead = this._pendingReads.shift();
 
                 if (!nextRead) {
                     return;
                 }
 
+                this._buffer = this._buffer.slice(1);
                 nextRead(nextByte);
-                data = data.slice(1);
             }
         };
     }
