@@ -1,12 +1,12 @@
 import {EventEmitter} from 'events';
 import * as NodeSerialPort from 'serialport';
 
-type PendingReadResolve = (byte: number) => void;
+type PendingRead = (byte: number) => void;
 
 export class SerialPort {
     private readonly _port: NodeSerialPort;
 
-    private _pendingReads: PendingReadResolve[] = [];
+    private _pendingReads: PendingRead[] = [];
 
     constructor(port: string, baudRate: number = 115200) {
         this._port = new NodeSerialPort(port, {
@@ -29,7 +29,7 @@ export class SerialPort {
     }
 
     recv(): Promise<number> {
-        return new Promise<number>((resolve: PendingReadResolve) => {
+        return new Promise<number>((resolve: PendingRead) => {
             this._pendingReads.push(resolve);
         });
     }
