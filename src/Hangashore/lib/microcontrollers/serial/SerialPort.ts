@@ -35,7 +35,7 @@ export class SerialPort {
     }
 
     _parser() {
-        let data = new Buffer(0);
+        let data = Buffer.alloc(0);
         return (_: EventEmitter, buffer: Buffer) => {
             data = Buffer.concat([data, buffer]);
             while (data.length) {
