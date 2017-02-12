@@ -10,14 +10,14 @@ export type WirelessSource = {
 const makeWirelessDriver = (name: string) => {
     const m = WirelessLinkMicrocontroller.fromSerialPort(name);
     return (data$: Observable<Motion>) => {
-        const motion$ = data$.flatMap(data =>
-            Observable.fromPromise(Motion.schema.encode(data)));
+        const motion$ = data$.flatMap(data => Motion.schema.encode(data));
         const rssi$ = new Subject<number>();
 
-        motion$.subscribe(motion => {
-            m.send(motion);
-            m.recv().then(response => rssi$.onNext(response.rssi()));
-        });
+        motion$
+            .concatMap((motion) => Observable.defer(() => m.send(motion).then(_ => m.recv())))
+            .subscribe((recv) => {
+                rssi$.onNext(recv.rssi());
+            });
         return {
             rssi$,
         };
