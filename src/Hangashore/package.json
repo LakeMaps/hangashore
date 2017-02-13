@@ -19,7 +19,7 @@
     "protocol-buffers": "3.2.1",
     "rx": "4.1.0",
     "serialport": "4.0.7",
-    "tachyons": "4.5.3",
+    "tachyons": "4.6.2",
     "ts-match": "1.1.0",
     "xstream": "8.0.0"
   },
