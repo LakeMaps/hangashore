@@ -12,16 +12,16 @@
     "test": "npm run build && tape test/**/*.js | tap-list"
   },
   "dependencies": {
-    "@cycle/dom": "14.1.0",
-    "@cycle/rx-run": "7.0.1",
+    "@cycle/dom": "14.3.0",
+    "@cycle/rx-run": "7.2.0",
     "crc": "3.4.4",
-    "hypercycle": "2.0.1",
+    "hypercycle": "4.0.0",
     "protocol-buffers": "3.2.1",
     "rx": "4.1.0",
     "serialport": "4.0.7",
     "tachyons": "4.6.2",
     "ts-match": "1.1.0",
-    "xstream": "8.0.0"
+    "xstream": "10.2.0"
   },
   "devDependencies": {
     "@types/electron": "1.4.25",
