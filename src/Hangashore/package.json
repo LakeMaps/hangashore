@@ -16,6 +16,8 @@
     "@cycle/rx-run": "7.2.0",
     "crc": "3.4.4",
     "hypercycle": "4.0.0",
+    "localforage": "1.4.3",
+    "lodash.kebabcase": "4.1.1",
     "protocol-buffers": "3.2.1",
     "rx": "4.1.0",
     "serialport": "4.0.7",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@types/electron": "1.4.25",
+    "@types/lodash.kebabcase": "4.1.1",
     "@types/rx": "2.5.33",
     "@types/serialport": "4.0.7",
     "@types/tape": "4.2.29",
