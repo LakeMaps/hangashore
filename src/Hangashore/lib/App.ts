@@ -21,6 +21,7 @@ export type Sources = {
 
 export type Sinks = {
     dom: Observable<VNode>,
+    log: Observable<any>,
     wireless: Observable<Motion>,
 };
 
@@ -157,6 +158,7 @@ export function App({gamepad, wireless}: Sources): Sinks {
         new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]));
     return {
         dom: vtree$,
+        log: Observable.empty(),
         wireless: motion$.distinctUntilChanged(),
     };
 }
