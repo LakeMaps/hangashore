@@ -9,7 +9,7 @@ export type WirelessSource = {
 
 const makeWirelessDriver = (name: string) => {
     const m = WirelessLinkMicrocontroller.fromSerialPort(name);
-    return (data$: Observable<Motion>) => {
+    return (data$: Observable<Motion>): WirelessSource => {
         const motion$ = data$.flatMap(data => Motion.schema.encode(data));
         const rssi$ = new Subject<number>();
 
