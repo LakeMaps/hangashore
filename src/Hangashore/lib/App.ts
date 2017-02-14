@@ -158,7 +158,7 @@ export function App({gamepad, wireless}: Sources): Sinks {
         new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]));
     return {
         dom: vtree$,
-        log: Observable.empty(),
+        log: wireless.rssi$,
         wireless: motion$.distinctUntilChanged(),
     };
 }
