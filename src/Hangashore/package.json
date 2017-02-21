@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --pretty --project .",
-    "electron-rebuild": "find node_modules -type f -name '*.node' -delete && electron-rebuild",
+    "electron-rebuild": "printf '%s\n' 'Rebuilding node_modules for Electron' && find node_modules -type f -name '*.node' -delete && electron-rebuild",
     "lint": "tslint --format verbose --project .",
     "start": "npm run build && electron .",
     "test": "npm run build && tape test/**/*.js | tap-list"
