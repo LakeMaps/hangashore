@@ -38,7 +38,7 @@ export class WirelessLinkMicrocontroller {
         return new WirelessLinkMicrocontroller(port.recv.bind(port), port.send.bind(port));
     }
 
-    private readonly _commands = new Map([
+    private readonly _commands = new Map<number, number>([
         [0x00,  1],
         [0x03, 64],
         [0x04,  1],
@@ -92,7 +92,7 @@ export class WirelessLinkMicrocontroller {
                 when(MessageStatePayload, () => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
-                    if (newBuffer.length === (payloadSize + 2)) {
+                    if (payloadSize && newBuffer.length === (payloadSize + 2)) {
                         return this._parseMessage(new MessageStateChecksum(), newBuffer);
                     } else {
                         return this._parseMessage(new MessageStatePayload(), newBuffer);
@@ -101,7 +101,7 @@ export class WirelessLinkMicrocontroller {
                 when(MessageStateChecksum, () => {
                     const payloadSize = this._commands.get(buffer[1]);
                     const newBuffer = bufferOf(buffer, byte);
-                    if (newBuffer.length === (payloadSize + 4)) {
+                    if (payloadSize && newBuffer.length === (payloadSize + 4)) {
                         return Promise.resolve(Message.from(newBuffer));
                     } else {
                         return this._parseMessage(new MessageStateChecksum(), newBuffer);
