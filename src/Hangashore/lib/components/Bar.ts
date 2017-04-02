@@ -23,7 +23,7 @@ export function Bar(sources: Sources): Sinks {
     const vtree$ = Observable.combineLatest(sources.props.vtree$, (...trees: VNode[]) => html`
         <div class="flex-col status-bar">
             <h3>${sources.props.name}</h3>
-            ${view(trees)}
+            ${view(...trees)}
         </div>
     `);
     return {
