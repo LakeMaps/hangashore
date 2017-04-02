@@ -1,4 +1,4 @@
-import {Observable, Subject} from 'rx';
+import {Observable, Subject} from 'rxjs';
 import {WirelessLinkMicrocontroller} from '../microcontrollers';
 
 import {Motion} from '../values/Motion';
@@ -16,7 +16,7 @@ const makeWirelessDriver = (name: string) => {
         motion$
             .concatMap((motion) => Observable.defer(() => m.send(motion).then(_ => m.recv())))
             .subscribe((recv) => {
-                rssi$.onNext(recv.rssi());
+                rssi$.next(recv.rssi());
             });
         return {
             rssi$,

@@ -12,23 +12,22 @@
     "test": "npm run build && tape test/**/*.js | tap-list"
   },
   "dependencies": {
-    "@cycle/dom": "14.3.0",
-    "@cycle/rx-run": "7.2.0",
+    "@cycle/dom": "17.1.0",
+    "@cycle/rxjs-run": "7.0.0",
     "crc": "3.4.4",
-    "hypercycle": "4.0.0",
+    "hypercycle": "5.0.0",
     "localforage": "1.4.3",
     "lodash.kebabcase": "4.1.1",
     "protocol-buffers": "3.2.1",
-    "rx": "4.1.0",
+    "rxjs": "5.2.1-smooth",
     "serialport": "4.0.7",
     "tachyons": "4.6.2",
     "ts-match": "1.1.0",
-    "xstream": "10.2.0"
+    "xstream": "10.3.0"
   },
   "devDependencies": {
     "@types/electron": "1.4.25",
     "@types/lodash.kebabcase": "4.1.1",
-    "@types/rx": "2.5.33",
     "@types/serialport": "4.0.7",
     "@types/tape": "4.2.29",
     "electron": "1.4.4",

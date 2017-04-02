@@ -1,5 +1,5 @@
 import {kebabCase} from 'lodash';
-import {Observable} from 'rx';
+import {Observable} from 'rxjs';
 
 const LocalForage = require(`localforage`);
 
