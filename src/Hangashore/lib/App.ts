@@ -158,6 +158,6 @@ export function App({gamepad, wireless}: Sources): Sinks {
     return {
         dom: vtree$,
         log: wireless.rssi$,
-        wireless: motion$.distinctUntilChanged(),
+        wireless: motion$.distinctUntilChanged(Motion.equals),
     };
 }
