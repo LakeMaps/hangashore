@@ -5,9 +5,4 @@ set -u
 set -o pipefail
 
 cd src/Hangashore/
-# Always remove @types/rx to ensure it can be patched fresh
-# 'cause apparently POSIX patch cannot ignore patches that've
-# already been applied.
-rm -fr 'node_modules/@types/rx/'
 npm install
-curl -sSL https://git.io/v1knr | patch -p1
