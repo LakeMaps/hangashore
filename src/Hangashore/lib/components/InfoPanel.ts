@@ -1,6 +1,6 @@
 import {VNode} from '@cycle/dom';
 import {html} from 'hypercycle';
-import {Observable} from 'rx';
+import {Observable} from 'rxjs';
 
 export type InfoPanelPropsEntry = {
     key: string,

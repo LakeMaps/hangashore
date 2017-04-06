@@ -1,7 +1,6 @@
-import {VNode} from '@cycle/dom';
-import {DOMSource} from '@cycle/dom/rx-typings';
+import {DOMSource, VNode} from '@cycle/dom';
 import {html} from 'hypercycle';
-import {Observable} from 'rx';
+import {Observable} from 'rxjs';
 
 import {Constants} from '../constants';
 import {Bar} from './components/Bar';
@@ -52,26 +51,26 @@ export function App({gamepad, wireless}: Sources): Sinks {
             y: w.innerHeight,
         }));
     const header = Header({
-        props$: Observable.just(Constants.NAME),
+        props$: Observable.of(Constants.NAME),
     });
     const statuses = [{
         name: `Battery`,
-        value: Observable.just(`12.3 V`),
+        value: Observable.of(`12.3 V`),
     }, {
         name: `Power Use`,
-        value: Observable.just(`46 W`),
+        value: Observable.of(`46 W`),
     }, {
         name: `Throttle`,
-        value: Observable.just(`90%`),
+        value: Observable.of(`90%`),
     }, {
         name: `Steering`,
-        value: Observable.just(`+5°`),
+        value: Observable.of(`+5°`),
     }, {
         name: `Air Temp`,
-        value: Observable.just(`21 °C`),
+        value: Observable.of(`21 °C`),
     }, {
         name: `Water Temp`,
-        value: Observable.just(`16 °C`),
+        value: Observable.of(`16 °C`),
     }, {
         name: `RSSI`,
         value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`???`),
@@ -79,11 +78,11 @@ export function App({gamepad, wireless}: Sources): Sinks {
     const statusBar = Bar({
         props: {
             name: `System Information`,
-            vtree$: statuses.map(status => Status({ props$: Observable.just(status) }).dom),
+            vtree$: statuses.map(status => Status({ props$: Observable.of(status) }).dom),
         },
     });
     const buttonPanel = ButtonPanel({
-        props$: Observable.just({
+        props$: Observable.of({
             buttons: [
                 `Auto`,
                 `Manual`,
@@ -96,55 +95,55 @@ export function App({gamepad, wireless}: Sources): Sinks {
         }),
     });
     const locationInfo = InfoPanel({
-        props$: Observable.just({
+        props$: Observable.of({
             entries: [{
                 key: `Latitude`,
-                value: Observable.just(`49.201325°`),
+                value: Observable.of(`49.201325°`),
             }, {
                 key: `Longitude`,
-                value: Observable.just(`-57.053745°`),
+                value: Observable.of(`-57.053745°`),
             }, {
                 key: `Speed`,
-                value: Observable.just(`2.7 m/s`),
+                value: Observable.of(`2.7 m/s`),
             }, {
                 key: `Heading`,
-                value: Observable.just(`56°`),
+                value: Observable.of(`56°`),
             }, {
                 key: `Elevation`,
-                value: Observable.just(`87 m`),
+                value: Observable.of(`87 m`),
             }, {
                 key: `HDOP`,
-                value: Observable.just(`6`),
+                value: Observable.of(`6`),
             }],
             title: `Location Information`,
         }),
     });
     const missionInfo = InfoPanel({
-        props$: Observable.just({
+        props$: Observable.of({
             entries: [{
                 key: `Current Depth`,
-                value: Observable.just(`4.09 m`),
+                value: Observable.of(`4.09 m`),
             }, {
                 key: `Distance Covered`,
-                value: Observable.just(`1670 m`),
+                value: Observable.of(`1670 m`),
             }, {
                 key: `Distance Left`,
-                value: Observable.just(`1370 m`),
+                value: Observable.of(`1370 m`),
             }, {
                 key: `Elapsed Time`,
-                value: Observable.just(`00:34:15`),
+                value: Observable.of(`00:34:15`),
             }, {
                 key: `ETA Completion`,
-                value: Observable.just(`00:27:56`),
+                value: Observable.of(`00:27:56`),
             }, {
                 key: `File Size`,
-                value: Observable.just(`13567K`),
+                value: Observable.of(`13567K`),
             }],
             title: `Mission Information`,
         }),
     });
     const map = Map({
-        props$: Observable.just({
+        props$: Observable.of({
             center: [47.5652878, -52.6988835],
             title: `Real-time Tracking`,
             zoom: 16,
@@ -159,6 +158,6 @@ export function App({gamepad, wireless}: Sources): Sinks {
     return {
         dom: vtree$,
         log: wireless.rssi$,
-        wireless: motion$.distinctUntilChanged(),
+        wireless: motion$.distinctUntilChanged(Motion.equals),
     };
 }

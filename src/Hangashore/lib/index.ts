@@ -1,5 +1,5 @@
 import {makeDOMDriver} from '@cycle/dom';
-import {run} from '@cycle/rx-run';
+import {run} from '@cycle/rxjs-run';
 
 import {App} from './App';
 import {makeGamepadDriver} from './drivers/gamepad';

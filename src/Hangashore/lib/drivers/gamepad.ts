@@ -1,6 +1,7 @@
-import {Disposable, Observable, Observer} from 'rx';
+import {adapt} from '@cycle/run/lib/adapt';
+import {Observable, Observer} from 'rxjs';
 
-const makeGamepadDriver = (id?: string) => () => Observable.create((observer: Observer<Gamepad>) => {
+const makeGamepadDriver = (id?: string) => () => adapt(Observable.create((observer: Observer<Gamepad>) => {
     let raf = window.requestAnimationFrame(function loop() {
         const gamepads = navigator.getGamepads();
         for (const gamepad of gamepads) {
@@ -10,11 +11,11 @@ const makeGamepadDriver = (id?: string) => () => Observable.create((observer: Ob
             if (id && gamepad.id !== id) {
                 continue;
             }
-            observer.onNext(gamepad);
+            observer.next(gamepad);
         }
         raf = window.requestAnimationFrame(loop);
     });
-    return Disposable.create(() => window.cancelAnimationFrame(raf));
-});
+    return () => window.cancelAnimationFrame(raf);
+}));
 
 export { makeGamepadDriver };

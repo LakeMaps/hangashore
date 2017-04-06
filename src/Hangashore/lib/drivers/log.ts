@@ -1,5 +1,6 @@
 import {kebabCase} from 'lodash';
-import {Observable} from 'rx';
+import {Observable} from 'rxjs';
+import {Stream} from 'xstream';
 
 const LocalForage = require(`localforage`);
 
@@ -15,10 +16,12 @@ const makeLogDriver = (config: Config) => {
         name: kebabCase(config.name),
         storeName: kebabCase(`${config.name}-kv`),
     });
-    return (data$: Observable<any>) => {
-        data$.timestamp().subscribe(data => {
-            store.setItem(data.timestamp.toString(), data.value);
-        });
+    return (data$: Stream<any>) => {
+        (<Observable<any>> Observable.from(data$))
+            .timestamp()
+            .subscribe(data => {
+                store.setItem(data.timestamp.toString(), data.value);
+            });
     };
 };
 
