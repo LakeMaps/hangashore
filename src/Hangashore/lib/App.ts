@@ -1,4 +1,6 @@
-import {DOMSource, VNode} from '@cycle/dom';
+import {VNode} from '@cycle/dom';
+import {DOMSource} from '@cycle/dom/rxjs-typings';
+import isolate from '@cycle/isolate';
 import {html} from 'hypercycle';
 import {Observable} from 'rxjs';
 
@@ -7,7 +9,7 @@ import {Bar} from './components/Bar';
 import {ButtonPanel} from './components/ButtonPanel';
 import {Header} from './components/Header';
 import {InfoPanel} from './components/InfoPanel';
-import {Map} from './components/Map';
+import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
 import {Status} from './components/Status';
 import {WirelessSource} from './drivers/wireless';
 import {Motion} from './values/Motion';
@@ -42,7 +44,7 @@ const view = (size: {x: number, y: number}) =>
         </div>
     `;
 
-export function App({gamepad, wireless}: Sources): Sinks {
+export function App({dom, gamepad, wireless}: Sources): Sinks {
     const size$ = Observable.fromEvent(<any> window, `resize`)
         .map(event => <Window> (<any> event).target)
         .startWith(window)
@@ -122,31 +124,31 @@ export function App({gamepad, wireless}: Sources): Sinks {
         props$: Observable.of({
             entries: [{
                 key: `Current Depth`,
-                value: Observable.of(`4.09 m`),
+                value: Observable.of(`---`),
             }, {
                 key: `Distance Covered`,
-                value: Observable.of(`1670 m`),
+                value: Observable.of(`---`),
             }, {
                 key: `Distance Left`,
-                value: Observable.of(`1370 m`),
+                value: Observable.of(`---`),
             }, {
                 key: `Elapsed Time`,
-                value: Observable.of(`00:34:15`),
+                value: Observable.of(`---`),
             }, {
                 key: `ETA Completion`,
-                value: Observable.of(`00:27:56`),
+                value: Observable.of(`---`),
             }, {
                 key: `File Size`,
-                value: Observable.of(`13567K`),
+                value: Observable.of(`---`),
             }],
             title: `Mission Information`,
         }),
     });
-    const map = Map({
+    const map: OpenLayersMapSinks = isolate(OpenLayersMap)({
+        dom,
+        pos$: wireless.gps$.map(gps => [gps.position.longitude, gps.position.latitude]),
         props$: Observable.of({
-            center: [47.5652878, -52.6988835],
             title: `Real-time Tracking`,
-            zoom: 16,
         }),
     });
     const components = [header, buttonPanel, locationInfo, missionInfo, map, statusBar];

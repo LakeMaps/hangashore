@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@cycle/dom": "17.1.0",
+    "@cycle/isolate": "2.1.0",
     "@cycle/rxjs-run": "7.0.0",
     "@lakemaps/schemas": "3.1.1",
     "crc": "3.4.4",
