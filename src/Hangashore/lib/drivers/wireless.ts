@@ -15,7 +15,7 @@ const makeWirelessDriver = (name: string) => {
         const rssi$ = new Subject<number>();
 
         motion$
-            .mergeMap((data) => Motion.schema.encode(data))
+            .map((data) => data.encode())
             .exhaustMap((motion: Buffer) => Observable.defer(() => m.send(motion).then(_ => m.recv())))
             .subscribe((recv) => {
                 rssi$.next(recv.rssi());
