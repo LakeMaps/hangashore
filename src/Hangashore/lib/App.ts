@@ -12,6 +12,7 @@ import {InfoPanel} from './components/InfoPanel';
 import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
 import {Status} from './components/Status';
 import {WirelessSource} from './drivers/wireless';
+import {Gps} from './values/Gps';
 import {Motion} from './values/Motion';
 
 export type Sources = {
@@ -100,22 +101,23 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
         props$: Observable.of({
             entries: [{
                 key: `Latitude`,
-                value: Observable.of(`49.201325°`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.position.latitude.toFixed(4)}°`).startWith(`---`),
             }, {
                 key: `Longitude`,
-                value: Observable.of(`-57.053745°`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.position.longitude.toFixed(4)}°`).startWith(`---`),
             }, {
                 key: `Speed`,
-                value: Observable.of(`2.7 m/s`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.velocity.speed.toFixed(2)} km/h`).startWith(`---`),
             }, {
                 key: `Heading`,
-                value: Observable.of(`56°`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.velocity.trueBearing.toFixed(2)}°`).startWith(`---`),
             }, {
                 key: `Elevation`,
-                value: Observable.of(`87 m`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.position.elevation.toFixed(2)} m`).startWith(`---`),
             }, {
                 key: `HDOP`,
-                value: Observable.of(`6`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.horizontalDilutionOfPrecision.toFixed(2)}`)
+                    .startWith(`---`),
             }],
             title: `Location Information`,
         }),
