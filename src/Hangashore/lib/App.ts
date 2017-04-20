@@ -58,22 +58,22 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
     });
     const statuses = [{
         name: `Battery`,
-        value: Observable.of(`12.3 V`),
+        value: Observable.of(`---`),
     }, {
         name: `Power Use`,
-        value: Observable.of(`46 W`),
+        value: Observable.of(`---`),
     }, {
         name: `Throttle`,
-        value: Observable.of(`90%`),
+        value: Observable.of(`---`),
     }, {
         name: `Steering`,
-        value: Observable.of(`+5°`),
+        value: Observable.of(`---`),
     }, {
         name: `Air Temp`,
-        value: Observable.of(`21 °C`),
+        value: Observable.of(`---`),
     }, {
         name: `Water Temp`,
-        value: Observable.of(`16 °C`),
+        value: Observable.of(`---`),
     }, {
         name: `RSSI`,
         value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`???`),
