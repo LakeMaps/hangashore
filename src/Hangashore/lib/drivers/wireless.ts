@@ -24,7 +24,7 @@ const makeWirelessDriver = (name: string) => {
             .filter((recv) => recv.containsMessage())
             .subscribe((recv: WirelessLinkReceiveMessage) => {
                 rssi$.next(recv.rssi());
-                gps$.next(Gps.decode(recv.body().slice(0, 54)));
+                gps$.next(Gps.decode(recv.body()));
             });
         return {
             rssi$,
