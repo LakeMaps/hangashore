@@ -1,4 +1,6 @@
-import {DOMSource, VNode} from '@cycle/dom';
+import {VNode} from '@cycle/dom';
+import {DOMSource} from '@cycle/dom/rxjs-typings';
+import isolate from '@cycle/isolate';
 import {html} from 'hypercycle';
 import {Observable} from 'rxjs';
 
@@ -7,9 +9,10 @@ import {Bar} from './components/Bar';
 import {ButtonPanel} from './components/ButtonPanel';
 import {Header} from './components/Header';
 import {InfoPanel} from './components/InfoPanel';
-import {Map} from './components/Map';
+import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
 import {Status} from './components/Status';
 import {WirelessSource} from './drivers/wireless';
+import {Gps} from './values/Gps';
 import {Motion} from './values/Motion';
 
 export type Sources = {
@@ -42,7 +45,7 @@ const view = (size: {x: number, y: number}) =>
         </div>
     `;
 
-export function App({gamepad, wireless}: Sources): Sinks {
+export function App({dom, gamepad, wireless}: Sources): Sinks {
     const size$ = Observable.fromEvent(<any> window, `resize`)
         .map(event => <Window> (<any> event).target)
         .startWith(window)
@@ -55,22 +58,22 @@ export function App({gamepad, wireless}: Sources): Sinks {
     });
     const statuses = [{
         name: `Battery`,
-        value: Observable.of(`12.3 V`),
+        value: Observable.of(`---`),
     }, {
         name: `Power Use`,
-        value: Observable.of(`46 W`),
+        value: Observable.of(`---`),
     }, {
         name: `Throttle`,
-        value: Observable.of(`90%`),
+        value: Observable.of(`---`),
     }, {
         name: `Steering`,
-        value: Observable.of(`+5°`),
+        value: Observable.of(`---`),
     }, {
         name: `Air Temp`,
-        value: Observable.of(`21 °C`),
+        value: Observable.of(`---`),
     }, {
         name: `Water Temp`,
-        value: Observable.of(`16 °C`),
+        value: Observable.of(`---`),
     }, {
         name: `RSSI`,
         value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`???`),
@@ -98,22 +101,23 @@ export function App({gamepad, wireless}: Sources): Sinks {
         props$: Observable.of({
             entries: [{
                 key: `Latitude`,
-                value: Observable.of(`49.201325°`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.position.latitude.toFixed(4)}°`).startWith(`---`),
             }, {
                 key: `Longitude`,
-                value: Observable.of(`-57.053745°`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.position.longitude.toFixed(4)}°`).startWith(`---`),
             }, {
                 key: `Speed`,
-                value: Observable.of(`2.7 m/s`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.velocity.speed.toFixed(2)} km/h`).startWith(`---`),
             }, {
                 key: `Heading`,
-                value: Observable.of(`56°`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.velocity.trueBearing.toFixed(2)}°`).startWith(`---`),
             }, {
                 key: `Elevation`,
-                value: Observable.of(`87 m`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.position.elevation.toFixed(2)} m`).startWith(`---`),
             }, {
                 key: `HDOP`,
-                value: Observable.of(`6`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.horizontalDilutionOfPrecision.toFixed(2)}`)
+                    .startWith(`---`),
             }],
             title: `Location Information`,
         }),
@@ -122,31 +126,31 @@ export function App({gamepad, wireless}: Sources): Sinks {
         props$: Observable.of({
             entries: [{
                 key: `Current Depth`,
-                value: Observable.of(`4.09 m`),
+                value: Observable.of(`---`),
             }, {
                 key: `Distance Covered`,
-                value: Observable.of(`1670 m`),
+                value: Observable.of(`---`),
             }, {
                 key: `Distance Left`,
-                value: Observable.of(`1370 m`),
+                value: Observable.of(`---`),
             }, {
                 key: `Elapsed Time`,
-                value: Observable.of(`00:34:15`),
+                value: Observable.of(`---`),
             }, {
                 key: `ETA Completion`,
-                value: Observable.of(`00:27:56`),
+                value: Observable.of(`---`),
             }, {
                 key: `File Size`,
-                value: Observable.of(`13567K`),
+                value: Observable.of(`---`),
             }],
             title: `Mission Information`,
         }),
     });
-    const map = Map({
+    const map: OpenLayersMapSinks = isolate(OpenLayersMap)({
+        dom,
+        pos$: wireless.gps$.map(gps => [gps.position.longitude, gps.position.latitude]),
         props$: Observable.of({
-            center: [47.5652878, -52.6988835],
             title: `Real-time Tracking`,
-            zoom: 16,
         }),
     });
     const components = [header, buttonPanel, locationInfo, missionInfo, map, statusBar];
