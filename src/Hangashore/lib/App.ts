@@ -4,7 +4,7 @@ import isolate from '@cycle/isolate';
 import {html} from 'hypercycle';
 import {Observable} from 'rxjs';
 
-import {Constants} from '../constants';
+import {APPLICATION_NAME} from '../constants';
 import {Bar} from './components/Bar';
 import {ButtonPanel} from './components/ButtonPanel';
 import {Header} from './components/Header';
@@ -54,7 +54,7 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
             y: w.innerHeight,
         }));
     const header = Header({
-        props$: Observable.of(Constants.NAME),
+        props$: Observable.of(APPLICATION_NAME),
     });
     const statuses = [{
         name: `Battery`,

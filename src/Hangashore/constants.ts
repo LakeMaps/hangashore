@@ -1,3 +1,1 @@
-export class Constants {
-    static NAME = `Hangashore`;
-}
+export const APPLICATION_NAME = `Hangashore`;
