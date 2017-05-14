@@ -2,9 +2,9 @@ import {makeDOMDriver} from '@cycle/dom';
 import {run} from '@cycle/rxjs-run';
 
 import {App} from './App';
+import {makeUdpDriver} from './drivers/broadcast';
 import {AxialDeadzone, makeGamepadDriver} from './drivers/gamepad';
 import {makeLogDriver} from './drivers/log';
-import {makeWirelessDriver} from './drivers/wireless';
 
 run(App, {
     dom: makeDOMDriver(`#app`),
@@ -13,5 +13,5 @@ run(App, {
         description: `Incoming RSSI values`,
         name: `RSSI logs`,
     }),
-    wireless: makeWirelessDriver(`/dev/cu.usbmodemFA131`),
+    wireless: makeUdpDriver('192.168.1.100', 12345),
 });

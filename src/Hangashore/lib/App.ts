@@ -11,7 +11,7 @@ import {Header} from './components/Header';
 import {InfoPanel} from './components/InfoPanel';
 import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
 import {Status} from './components/Status';
-import {WirelessSource} from './drivers/wireless';
+import {WirelessSource} from './drivers/broadcast';
 import {Gps} from './values/Gps';
 import {Motion} from './values/Motion';
 
