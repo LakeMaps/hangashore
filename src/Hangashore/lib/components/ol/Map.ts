@@ -51,8 +51,6 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
     });
 
     pos$.subscribe(pos => {
-        // FIXME: I forgot to read the GPS values correctly
-        pos[0] = -pos[0];
         marker.setGeometry(new Point(proj.fromLonLat(pos)));
         view.setCenter(proj.fromLonLat(pos));
     });
