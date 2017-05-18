@@ -1,4 +1,5 @@
 # vim: set sw=4 ts=4 expandtab:
+dist: trusty
 sudo: false
 language: node_js
 
@@ -8,12 +9,18 @@ addons:
             - ubuntu-toolchain-r-test
         packages:
             - g++-4.8
+            - wine1.6
 matrix:
     include:
         - node_js: "6"
           os: linux
           env:
               - CXX=g++-4.8
+        - node_js: "6"
+          os: linux
+          env:
+              - CXX=g++-4.8
+              - PLATFORM=win32
         - node_js: "6"
           os: osx
 install:
@@ -28,6 +35,7 @@ deploy:
     file_glob: true
     file:
         - "build/*.tgz"
+        - "build/*.zip"
     skip_cleanup: true
     on:
         tags: true
