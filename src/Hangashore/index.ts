@@ -8,7 +8,6 @@ app.on(`ready`, () => {
         width: 1024,
     });
     w.loadURL(`file://${__dirname}/index.html`);
-    w.webContents.openDevTools();
     w.on(`closed`, () => w = null);
 });
 
