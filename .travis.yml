@@ -17,6 +17,11 @@ matrix:
           env:
               - CXX=g++-4.8
         - node_js: "6"
+          os: linux
+          env:
+              - CXX=g++-4.8
+              - PLATFORM=win32
+        - node_js: "6"
           os: osx
 install:
     - .travis/install
