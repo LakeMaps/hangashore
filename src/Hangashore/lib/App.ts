@@ -76,7 +76,7 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
         value: Observable.of(`---`),
     }, {
         name: `RSSI`,
-        value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`???`),
+        value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`---`),
     }];
     const statusBar = Bar({
         props: {
@@ -107,7 +107,7 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
                 value: wireless.gps$.map((gps: Gps) => `${gps.position.longitude.toFixed(4)}°`).startWith(`---`),
             }, {
                 key: `Speed`,
-                value: wireless.gps$.map((gps: Gps) => `${gps.velocity.speed.toFixed(2)} km/h`).startWith(`---`),
+                value: wireless.gps$.map((gps: Gps) => `${gps.velocity.speed.toFixed(2)} m/s`).startWith(`---`),
             }, {
                 key: `Heading`,
                 value: wireless.gps$.map((gps: Gps) => `${gps.velocity.trueBearing.toFixed(2)}°`).startWith(`---`),
