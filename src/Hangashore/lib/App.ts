@@ -76,7 +76,7 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
         value: Observable.of(`---`),
     }, {
         name: `RSSI`,
-        value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`???`),
+        value: wireless.rssi$.map(rssi => `${rssi.toFixed()} dBm`).startWith(`---`),
     }];
     const statusBar = Bar({
         props: {
