@@ -15,6 +15,7 @@ import {WirelessSource} from './drivers/broadcast';
 import {ControlMode} from './values/ControlMode';
 import {Gps} from './values/Gps';
 import {Motion} from './values/Motion';
+import {Waypoint} from './values/Waypoint';
 
 export type Sources = {
     dom: DOMSource,
@@ -175,9 +176,12 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
     const controlMode$ = controlModes.selected$
         .map((x) => ControlMode.from(x))
         .map((c) => c.encode());
+    const waypoint$ = map.waypoint$
+        .map((w) => new Waypoint(w[0], w[1]))
+        .map((w) => w.encode());
     return {
         dom: vtree$,
         log: wireless.rssi$,
-        wireless: Observable.merge(motion$, controlMode$),
+        wireless: Observable.merge(motion$, controlMode$, waypoint$),
     };
 }
