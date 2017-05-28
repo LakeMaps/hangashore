@@ -12,6 +12,7 @@ import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
 import {RadioSet, RadioSetSinks} from './components/RadioSet';
 import {Status} from './components/Status';
 import {WirelessSource} from './drivers/broadcast';
+import {ControlMode} from './values/ControlMode';
 import {Gps} from './values/Gps';
 import {Motion} from './values/Motion';
 
@@ -91,11 +92,11 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
                 checked: true,
                 enabled: true,
                 name: `Manual`,
-                value: `Manual`,
+                value: ControlMode.MANUAL.toString(),
             }, {
                 enabled: true,
                 name: `Waypoint`,
-                value: `Waypoint`,
+                value: ControlMode.WAYPOINT.toString(),
             }, {
                 name: `Return`,
             }, {
@@ -168,11 +169,15 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
     const vtree$ = size$.flatMap(size =>
         Observable.combineLatest(components.map(component => component.dom), view(size)));
     // TODO: buttons 6 and 7 need to be combined in a smarter way to handle simultaneous presses
-    const motion$ = gamepad.filter(x => x !== undefined).map(g =>
-        new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]));
+    const motion$ = gamepad.filter((x) => x !== undefined)
+        .map((g) => new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]))
+        .map((m) => m.encode());
+    const controlMode$ = controlModes.selected$
+        .map((x) => ControlMode.from(x))
+        .map((c) => c.encode());
     return {
         dom: vtree$,
         log: wireless.rssi$,
-        wireless: motion$.map((m) => m.encode()),
+        wireless: Observable.merge(motion$, controlMode$),
     };
 }
