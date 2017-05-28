@@ -1,9 +1,23 @@
 import {div, VNode} from '@cycle/dom';
 import {DOMSource} from '@cycle/dom/rxjs-typings';
 import {html} from 'hypercycle';
-import {Coordinate, Feature, geom, layer as OLLayer, Map as OLMap, proj, source as OLSource, View} from 'openlayers';
+import {
+    Collection,
+    Coordinate,
+    Feature,
+    geom,
+    interaction,
+    layer as OLLayer,
+    Map as OLMap,
+    proj,
+    source as OLSource,
+    style,
+    View,
+} from 'openlayers';
 import {Observable} from 'rxjs';
 
+const {Style, Fill, Stroke, Circle} = style;
+const {Draw: DrawInteraction} = interaction;
 const {Tile: TileLayer, Vector: VectorLayer} = OLLayer;
 const {OSM, Vector} = OLSource;
 const {Point} = geom;
@@ -20,6 +34,7 @@ export type OpenLayersMapSources = {
 
 export type OpenLayersMapSinks = {
     dom: Observable<VNode>,
+    waypoint$: Observable<number[]>,
 };
 
 export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersMapSinks {
@@ -38,6 +53,18 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
             }),
             new VectorLayer({
                 source: new Vector({features: [marker]}),
+                style: new Style({
+                    image: new Circle({
+                        fill: new Fill({
+                            color: 'rgba(255,255,255,0.4)',
+                        }),
+                        radius: 7,
+                        stroke: new Stroke({
+                            color: '#3399CC',
+                            width: 2,
+                        }),
+                    }),
+                }),
             }),
         ],
         view,
@@ -49,6 +76,36 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
             },
         },
     });
+
+    const style = new Style({
+        image: new Circle({
+            fill: new Fill({
+                color: `rgba(255, 255, 255, 0.5)`,
+            }),
+            radius: 7,
+            stroke: new Stroke({
+                color: `#ffffff`,
+                width: 2,
+            }),
+        }),
+    });
+    const features: Collection<Feature> = new Collection<Feature>();
+    const featureOverlay = new VectorLayer({
+        source: new Vector({features}),
+        style,
+    });
+    const drawInteraction = new DrawInteraction({features, type: 'Point', style});
+    featureOverlay.setMap(map);
+    map.addInteraction(drawInteraction);
+
+    const waypoint$ = Observable.fromEvent(<any> features, 'add')
+        .shareReplay(1)
+        .map(() => features.item(features.getLength() - 1))
+        .map((feature) => proj.toLonLat((<geom.Point> feature.getGeometry()).getCoordinates()));
+
+    waypoint$
+        .filter(() => features.getLength() > 1)
+        .subscribe(() => features.removeAt(0));
 
     pos$.subscribe(pos => {
         marker.setGeometry(new Point(proj.fromLonLat(pos)));
@@ -64,5 +121,6 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
                 ${mapVNode}
             </div>
         `),
+        waypoint$,
     };
 }
