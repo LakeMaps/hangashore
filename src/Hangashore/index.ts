@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require(`electron`);
 
 let w: any;
+let isDevelopment = () => process.env.NODE_ENV === `development`;
 
 app.on(`ready`, () => {
     w = new BrowserWindow({
@@ -9,6 +10,9 @@ app.on(`ready`, () => {
     });
     w.loadURL(`file://${__dirname}/index.html`);
     w.on(`closed`, () => w = null);
+    if (isDevelopment()) {
+        w.webContents.openDevTools();
+    }
 });
 
 app.on(`window-all-closed`, () => {
