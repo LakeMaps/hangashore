@@ -22,7 +22,7 @@ test(`Motion values can be decoded when they are zero-padded`, (t) => {
 test(`Motion values can be decoded from a given set of bytes`, (t) => {
     t.plan(1);
 
-    const bytes = '09000000000000f03f110000000000000040';
+    const bytes = '08025a1209000000000000f03f110000000000000040';
     const m = new Motion(1, 2);
     t.deepEqual(Motion.decode(Buffer.from(bytes, `hex`)), m);
 });

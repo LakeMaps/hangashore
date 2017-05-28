@@ -22,7 +22,7 @@ test(`Waypoint values can be decoded when they are zero-padded`, (t) => {
 test(`Waypoint values can be decoded from a given set of bytes`, (t) => {
     t.plan(1);
 
-    const bytes = '090000000000004540110000000000003840';
+    const bytes = '08046a12090000000000004540110000000000003840';
     const w = new Waypoint(42, 24);
     t.deepEqual(Waypoint.decode(Buffer.from(bytes, `hex`)), w);
 });

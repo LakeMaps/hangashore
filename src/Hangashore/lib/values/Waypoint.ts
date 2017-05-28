@@ -1,9 +1,9 @@
-const {Waypoint: WaypointProtobuf} = require(`@lakemaps/schemas`);
+const {Waypoint: WaypointProtobuf, TypedMessage} = require(`@lakemaps/schemas`);
 
 export class Waypoint {
     static decode(buf: Buffer): Waypoint {
         const bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength / Uint8Array.BYTES_PER_ELEMENT);
-        return Waypoint.fromMessage(WaypointProtobuf.deserializeBinary(bytes));
+        return Waypoint.fromMessage(TypedMessage.deserializeBinary(bytes).getWaypoint());
     }
 
     static fromMessage(obj: any) {
@@ -13,9 +13,12 @@ export class Waypoint {
     private message: any;
 
     constructor(readonly longitude: number, readonly latitude: number) {
-        this.message = new WaypointProtobuf();
-        this.message.setLongitude(longitude);
-        this.message.setLatitude(latitude);
+        const waypoint = new WaypointProtobuf();
+        waypoint.setLongitude(longitude);
+        waypoint.setLatitude(latitude);
+        this.message = new TypedMessage();
+        this.message.setType(TypedMessage.Type.WAYPOINT);
+        this.message.setWaypoint(waypoint);
     }
 
     encode(): Buffer {
