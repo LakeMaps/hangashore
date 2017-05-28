@@ -27,7 +27,7 @@
     "@types/electron": "1.4.25",
     "@types/lodash.kebabcase": "4.1.1",
     "@types/openlayers": "4.0.1",
-    "@types/tape": "4.2.29",
+    "@types/tape": "4.2.30",
     "electron": "1.4.4",
     "tap-list": "1.0.1",
     "tape": "4.6.3",
