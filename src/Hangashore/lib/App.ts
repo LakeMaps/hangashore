@@ -24,7 +24,7 @@ export type Sources = {
 export type Sinks = {
     dom: Observable<VNode>,
     log: Observable<any>,
-    wireless: Observable<Motion>,
+    wireless: Observable<Buffer>,
 };
 
 const view = (size: {x: number, y: number}) =>
@@ -162,6 +162,6 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
     return {
         dom: vtree$,
         log: wireless.rssi$,
-        wireless: motion$,
+        wireless: motion$.map((m) => m.encode()),
     };
 }
