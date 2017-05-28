@@ -3,6 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {Stream} from 'xstream';
 
 import {Gps} from '../values/Gps';
+import {TypedMessage} from '../values/TypedMessage';
 
 export type WirelessSource = {
     rssi$: Observable<number>,
@@ -21,7 +22,11 @@ const makeUdpDriver = (address: string, port: number) => {
 
         Observable.fromEvent(socket, 'message')
             .subscribe((msg: Buffer) => {
-                gps$.next(Gps.decode(msg));
+                const typedMessage = TypedMessage.decode(msg);
+                if (typedMessage.isGps()) {
+                    gps$.next(Gps.decode(msg));
+                    return;
+                }
             });
 
         motion$.subscribe((motion: Buffer) => {
