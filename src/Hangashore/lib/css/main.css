@@ -76,15 +76,11 @@ h3, h4 {
 }
 .button-panel__buttons {
     width: 100%;
-    overflow-y: scroll;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 .button-panel__button {
-    padding: 0.5em;
-    flex-grow: 1;
-    margin: 0.5em;
-    min-width: 105px;
+    flex: 0 0 50%;
     background: linear-gradient(rgb(172, 201, 226), rgb(81, 180, 201));
     border-radius: 1em;
 }

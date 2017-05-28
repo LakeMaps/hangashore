@@ -6,10 +6,10 @@ import {Observable} from 'rxjs';
 
 import {APPLICATION_NAME} from '../constants';
 import {Bar} from './components/Bar';
-import {ButtonPanel} from './components/ButtonPanel';
 import {Header} from './components/Header';
 import {InfoPanel} from './components/InfoPanel';
 import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
+import {RadioSet, RadioSetSinks} from './components/RadioSet';
 import {Status} from './components/Status';
 import {WirelessSource} from './drivers/broadcast';
 import {Gps} from './values/Gps';
@@ -84,18 +84,29 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
             vtree$: statuses.map(status => Status({ props$: Observable.of(status) }).dom),
         },
     });
-    const buttonPanel = ButtonPanel({
+    const controlModes: RadioSetSinks = isolate(RadioSet)({
         props$: Observable.of({
-            buttons: [
-                `Auto`,
-                `Manual`,
-                `Return`,
-                `Load`,
-                `Standby`,
-                `Bypass`,
-            ],
             name: `Control Modes`,
+            options: [{
+                checked: true,
+                enabled: true,
+                name: `Manual`,
+                value: `Manual`,
+            }, {
+                enabled: true,
+                name: `Waypoint`,
+                value: `Waypoint`,
+            }, {
+                name: `Return`,
+            }, {
+                name: `Load`,
+            }, {
+                name: `Standby`,
+            }, {
+                name: `Bypass`,
+            }],
         }),
+        dom,
     });
     const locationInfo = InfoPanel({
         props$: Observable.of({
@@ -153,7 +164,7 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
             title: `Real-time Tracking`,
         }),
     });
-    const components = [header, buttonPanel, locationInfo, missionInfo, map, statusBar];
+    const components = [header, controlModes, locationInfo, missionInfo, map, statusBar];
     const vtree$ = size$.flatMap(size =>
         Observable.combineLatest(components.map(component => component.dom), view(size)));
     // TODO: buttons 6 and 7 need to be combined in a smarter way to handle simultaneous presses
