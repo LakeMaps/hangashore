@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require(`electron`);
+import {app, BrowserWindow} from 'electron';
 
 let w: any;
 let isDevelopment = () => process.env.NODE_ENV === `development`;
