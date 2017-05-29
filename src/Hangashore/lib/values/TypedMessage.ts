@@ -12,4 +12,8 @@ export class TypedMessage {
     isGps() {
         return this.type === TypedMessageProtobuf.Type.GPS;
     }
+
+    isMissionInformation() {
+        return this.type === TypedMessageProtobuf.Type.MISSION_INFORMATION;
+    }
 }

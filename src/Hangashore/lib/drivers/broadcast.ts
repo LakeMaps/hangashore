@@ -3,9 +3,11 @@ import {Observable, Subject} from 'rxjs';
 import {Stream} from 'xstream';
 
 import {Gps} from '../values/Gps';
+import {MissionInformation} from '../values/MissionInformation';
 import {TypedMessage} from '../values/TypedMessage';
 
 export type WirelessSource = {
+    missionInformation$: Observable<MissionInformation>,
     rssi$: Observable<number>,
     gps$: Observable<Gps>,
 };
@@ -19,12 +21,17 @@ const makeUdpDriver = (address: string, port: number) => {
         const motion$ = (<Observable<Buffer>> Observable.from(data$));
         const rssi$ = new Subject<number>();
         const gps$ = new Subject<Gps>();
+        const missionInformation$ = new Subject<MissionInformation>();
 
         Observable.fromEvent(socket, 'message')
             .subscribe((msg: Buffer) => {
                 const typedMessage = TypedMessage.decode(msg);
                 if (typedMessage.isGps()) {
                     gps$.next(Gps.decode(msg));
+                    return;
+                }
+                if (typedMessage.isMissionInformation()) {
+                    missionInformation$.next(MissionInformation.decode(msg));
                     return;
                 }
             });
@@ -35,6 +42,7 @@ const makeUdpDriver = (address: string, port: number) => {
         });
 
         return {
+            missionInformation$,
             rssi$,
             gps$,
         };
