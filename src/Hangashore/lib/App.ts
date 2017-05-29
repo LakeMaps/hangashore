@@ -144,8 +144,8 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
                 key: `Distance Covered`,
                 value: Observable.of(`---`),
             }, {
-                key: `Distance Left`,
-                value: Observable.of(`---`),
+                key: `Distance to Waypoint`,
+                value: wireless.missionInformation$.map((m) => `${m.distanceToWaypoint.toFixed(2)} m`).startWith(`---`),
             }, {
                 key: `Elapsed Time`,
                 value: Observable.of(`---`),
