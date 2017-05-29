@@ -3,6 +3,7 @@ import {DOMSource} from '@cycle/dom/rxjs-typings';
 import {html} from 'hypercycle';
 import {
     Collection,
+    control,
     Coordinate,
     Feature,
     geom,
@@ -16,6 +17,7 @@ import {
 } from 'openlayers';
 import {Observable} from 'rxjs';
 
+const {ScaleLine} = control;
 const {Style, Fill, Stroke, Circle} = style;
 const {Draw: DrawInteraction} = interaction;
 const {Tile: TileLayer, Vector: VectorLayer} = OLLayer;
@@ -47,6 +49,7 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
         zoom: 16,
     });
     const map = new OLMap({
+        controls: control.defaults().extend([new ScaleLine()]),
         layers: [
             new TileLayer({
                 source: new OSM(),
