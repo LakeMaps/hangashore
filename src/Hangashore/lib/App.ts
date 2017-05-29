@@ -6,14 +6,16 @@ import {Observable} from 'rxjs';
 
 import {APPLICATION_NAME} from '../constants';
 import {Bar} from './components/Bar';
-import {ButtonPanel} from './components/ButtonPanel';
 import {Header} from './components/Header';
 import {InfoPanel} from './components/InfoPanel';
 import {OpenLayersMap, OpenLayersMapSinks} from './components/ol/Map';
+import {RadioSet, RadioSetSinks} from './components/RadioSet';
 import {Status} from './components/Status';
 import {WirelessSource} from './drivers/broadcast';
+import {ControlMode} from './values/ControlMode';
 import {Gps} from './values/Gps';
 import {Motion} from './values/Motion';
+import {Waypoint} from './values/Waypoint';
 
 export type Sources = {
     dom: DOMSource,
@@ -24,7 +26,7 @@ export type Sources = {
 export type Sinks = {
     dom: Observable<VNode>,
     log: Observable<any>,
-    wireless: Observable<Motion>,
+    wireless: Observable<Buffer>,
 };
 
 const view = (size: {x: number, y: number}) =>
@@ -84,18 +86,29 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
             vtree$: statuses.map(status => Status({ props$: Observable.of(status) }).dom),
         },
     });
-    const buttonPanel = ButtonPanel({
+    const controlModes: RadioSetSinks = isolate(RadioSet)({
         props$: Observable.of({
-            buttons: [
-                `Auto`,
-                `Manual`,
-                `Return`,
-                `Load`,
-                `Standby`,
-                `Bypass`,
-            ],
             name: `Control Modes`,
+            options: [{
+                checked: true,
+                enabled: true,
+                name: `Manual`,
+                value: ControlMode.MANUAL.toString(),
+            }, {
+                enabled: true,
+                name: `Waypoint`,
+                value: ControlMode.WAYPOINT.toString(),
+            }, {
+                name: `Return`,
+            }, {
+                name: `Load`,
+            }, {
+                name: `Standby`,
+            }, {
+                name: `Bypass`,
+            }],
         }),
+        dom,
     });
     const locationInfo = InfoPanel({
         props$: Observable.of({
@@ -131,8 +144,8 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
                 key: `Distance Covered`,
                 value: Observable.of(`---`),
             }, {
-                key: `Distance Left`,
-                value: Observable.of(`---`),
+                key: `Distance to Waypoint`,
+                value: wireless.missionInformation$.map((m) => `${m.distanceToWaypoint.toFixed(2)} m`).startWith(`---`),
             }, {
                 key: `Elapsed Time`,
                 value: Observable.of(`---`),
@@ -153,15 +166,22 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
             title: `Real-time Tracking`,
         }),
     });
-    const components = [header, buttonPanel, locationInfo, missionInfo, map, statusBar];
+    const components = [header, controlModes, locationInfo, missionInfo, map, statusBar];
     const vtree$ = size$.flatMap(size =>
         Observable.combineLatest(components.map(component => component.dom), view(size)));
     // TODO: buttons 6 and 7 need to be combined in a smarter way to handle simultaneous presses
-    const motion$ = gamepad.filter(x => x !== undefined).map(g =>
-        new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]));
+    const motion$ = gamepad.filter((x) => x !== undefined)
+        .map((g) => new Motion(g.buttons[7].value - g.buttons[6].value, -g.axes[0]))
+        .map((m) => m.encode());
+    const controlMode$ = controlModes.selected$
+        .map((x) => ControlMode.from(x))
+        .map((c) => c.encode());
+    const waypoint$ = map.waypoint$
+        .map((w) => new Waypoint(w[0], w[1]))
+        .map((w) => w.encode());
     return {
         dom: vtree$,
         log: wireless.rssi$,
-        wireless: motion$,
+        wireless: Observable.merge(motion$, controlMode$, waypoint$),
     };
 }

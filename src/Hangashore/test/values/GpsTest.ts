@@ -25,7 +25,7 @@ test(`Gps values can be decoded from a given set of bytes`, (t) => {
     t.plan(1);
 
     // tslint:disable-next-line
-    const bytes = '0d00000040121b09000000000000104011000000000000084019000000000000f03f1a12090000000000001440110000000000001840';
+    const bytes = '080152360d00000040121b09000000000000104011000000000000084019000000000000f03f1a12090000000000001440110000000000001840';
     const g = new Gps(2, new Position(4, 3, 1), new Velocity(5, 6));
     t.deepEqual(Gps.decode(Buffer.from(bytes, `hex`)), g);
 });
