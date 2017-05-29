@@ -2,7 +2,7 @@ import {app, BrowserWindow} from 'electron';
 import {Observable} from 'rxjs';
 
 let w: any;
-let isDevelopment = () => process.env.NODE_ENV === `development`;
+const isDevelopment = () => process.env.NODE_ENV === `development`;
 
 Observable.fromEvent(app, `ready`)
     .subscribe(() => {
