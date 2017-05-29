@@ -13,7 +13,7 @@ export type WirelessSource = {
 };
 
 const makeUdpDriver = (address: string, port: number) => {
-    const socket = createSocket(`udp4`);
+    const socket = createSocket({type: 'udp4', reuseAddr: true});
 
     socket.bind({port});
 
