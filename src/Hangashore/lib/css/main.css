@@ -84,6 +84,9 @@ h3, h4 {
     background: linear-gradient(rgb(172, 201, 226), rgb(81, 180, 201));
     border-radius: 1em;
 }
+.number-input h5 {
+    margin: 0.1em;
+}
 .info {
     align-items: center;
 }
