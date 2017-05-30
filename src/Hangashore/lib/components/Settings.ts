@@ -5,6 +5,8 @@ import {html} from 'hypercycle';
 import {Observable} from 'rxjs';
 
 import {APPLICATION_NAME} from '../../constants';
+import {BoatConfig} from '../values/BoatConfig';
+import {PidControllerGains} from '../values/PidControllerGains';
 import {Header} from './Header';
 import {NumberInputPanel} from './NumberInputPanel';
 
@@ -42,9 +44,21 @@ export function Settings({dom}: Sources): Sinks {
         yControllerTimeStep.dom,
         (headerNode: VNode, ...nodes: VNode[]): VNode => html`<div class="flex-col flex-1">${headerNode}${nodes}</div>`,
     );
-
+    const boatConfig$ = Observable.combineLatest(
+        skp.value$,
+        ski.value$,
+        skd.value$,
+        sControllerTimeStep.value$,
+        ykp.value$,
+        yki.value$,
+        ykd.value$,
+        yControllerTimeStep.value$,
+        // tslint:disable-next-line
+        (skp: number, ski: number, skd: number, sdt: number, ykp: number, yki: number, ykd: number, ydt: number) =>
+            new BoatConfig(new PidControllerGains(skp, ski, skd), sdt, new PidControllerGains(ykp, yki, ykd), ydt),
+    );
     return {
         dom: vtree$,
-        wireless$: Observable.empty(),
+        wireless$: boatConfig$.map((c) => c.encode()),
     };
 }
