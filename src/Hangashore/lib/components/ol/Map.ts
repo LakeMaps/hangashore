@@ -87,7 +87,7 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
             }),
             radius: 7,
             stroke: new Stroke({
-                color: `#ffffff`,
+                color: `#00ff00`,
                 width: 2,
             }),
         }),
