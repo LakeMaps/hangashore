@@ -24,11 +24,10 @@
     "xstream": "10.8.0"
   },
   "devDependencies": {
-    "@types/electron": "1.4.25",
     "@types/lodash.kebabcase": "4.1.2",
     "@types/openlayers": "4.1.0",
     "@types/tape": "4.2.30",
-    "electron": "1.4.4",
+    "electron": "1.6.10",
     "tap-list": "1.0.1",
     "tape": "4.6.3",
     "tslint": "4.5.1",
