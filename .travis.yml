@@ -23,6 +23,8 @@ matrix:
               - PLATFORM=win32
         - node_js: "6"
           os: osx
+before_install:
+    - npm i -g npm@5
 install:
     - .travis/install
 script:
