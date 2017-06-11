@@ -60,6 +60,9 @@ function poll(config: Config, observer: Observer<Gamepad>) {
         if (gamepad === undefined) {
             continue;
         }
+        if (gamepad === null) {
+            continue;
+        }
         if (config.id && gamepad.id !== config.id) {
             continue;
         }
