@@ -55,9 +55,12 @@ const GamepadProxy = (deadzone: DeadzoneFunction): ProxyHandler<Gamepad> => ({
 });
 
 function poll(config: Config, observer: Observer<Gamepad>) {
-    const gamepads = navigator.getGamepads();
+    const gamepads = Array.from(navigator.getGamepads());
     for (const gamepad of gamepads) {
         if (gamepad === undefined) {
+            continue;
+        }
+        if (gamepad === null) {
             continue;
         }
         if (config.id && gamepad.id !== config.id) {
