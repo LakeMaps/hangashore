@@ -15,6 +15,7 @@ npm run electron-packager -- "$APPLICATION_DIRECTORY" "$APPLICATION_NAME" \
 	--out "$APPLICATION_OUTPUT_DIRECTORY" \
 	--overwrite \
 	--platform "$PLATFORM" \
+	--app-category-type=public.app-category.reference
 	--asar
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSE
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSES.chromium.html
