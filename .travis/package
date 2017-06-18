@@ -16,6 +16,8 @@ npm run electron-packager -- "$APPLICATION_DIRECTORY" "$APPLICATION_NAME" \
 	--overwrite \
 	--platform "$PLATFORM" \
 	--app-category-type=public.app-category.reference
+	--win32metadata.CompanyName="Lake Maps NL"
+	--win32metadata.ProductName="${APPLICATION_NAME}"
 	--asar
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSE
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSES.chromium.html
