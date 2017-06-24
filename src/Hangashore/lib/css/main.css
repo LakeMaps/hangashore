@@ -123,6 +123,7 @@ h3, h4 {
     border: 1px solid black;
 }
 .map {
+    display: flex;
     flex: 1;
     box-shadow: 3px 3px var(--ugly-blue-box);
     border-bottom: 1px solid black;
