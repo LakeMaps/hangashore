@@ -6,5 +6,5 @@ import {makeUdpDriver} from '../drivers/broadcast';
 
 run(Settings, {
     dom: makeDOMDriver(`#app`),
-    wireless$: makeUdpDriver('192.168.1.100', 12346),
+    wireless$: makeUdpDriver('192.168.1.100', 12345),
 });
