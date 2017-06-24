@@ -17,6 +17,7 @@ npm run electron-packager -- "$APPLICATION_DIRECTORY" "$APPLICATION_NAME" \
 	--platform "$PLATFORM" \
 	--icon="${APPLICATION_DIRECTORY%%/}/assets/icons/${APPLICATION_NAME}" \
 	--app-category-type=public.app-category.reference \
+	--app-copyright="OSL-3.0 Lake Maps NL" \
 	--win32metadata.CompanyName="Lake Maps NL" \
 	--win32metadata.ProductName="${APPLICATION_NAME}" \
 	--win32metadata.FileDescription="${APPLICATION_NAME}" \
