@@ -20,6 +20,7 @@ npm run electron-packager -- "$APPLICATION_DIRECTORY" "$APPLICATION_NAME" \
 	--app-copyright="OSL-3.0 Lake Maps NL" \
 	--win32metadata.CompanyName="Lake Maps NL" \
 	--win32metadata.ProductName="${APPLICATION_NAME}" \
+	--win32metadata.OriginalFilename="" \
 	--win32metadata.FileDescription="${APPLICATION_NAME}" \
 	--asar
 rm "${APPLICATION_OUTPUT_DIRECTORY%/}"/*/LICENSE
