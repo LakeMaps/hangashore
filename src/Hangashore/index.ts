@@ -23,3 +23,9 @@ Observable.fromEvent(app, `window-all-closed`)
             app.quit();
         }
     });
+
+Observable.fromEvent(app, `ready`)
+    .subscribe(() => {
+        const s = new BrowserWindow({height: 600, width: 400});
+        s.loadURL(`file://${__dirname}/windows/settings.html`);
+    });
