@@ -25,7 +25,6 @@ export type Sources = {
 
 export type Sinks = {
     dom: Observable<VNode>,
-    log: Observable<any>,
     wireless: Observable<Buffer>,
 };
 
@@ -181,7 +180,6 @@ export function App({dom, gamepad, wireless}: Sources): Sinks {
         .map((w) => w.encode());
     return {
         dom: vtree$,
-        log: wireless.rssi$,
         wireless: Observable.merge(motion$, controlMode$, waypoint$),
     };
 }
