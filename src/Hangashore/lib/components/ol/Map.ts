@@ -17,7 +17,7 @@ import {
 } from 'openlayers';
 import {Observable} from 'rxjs';
 
-import {newControl} from './CycleControl';
+import {cycleControl} from './CycleControl';
 import {MapCenter} from './MapCenter';
 
 const {ScaleLine} = control;
@@ -52,7 +52,7 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
         zoom: 16,
     });
     const map = new OLMap({
-        controls: control.defaults().extend([new ScaleLine(), newControl(MapCenter, {view, pos$})]),
+        controls: control.defaults().extend([new ScaleLine(), cycleControl(MapCenter, {view, pos$})]),
         layers: [
             new TileLayer({
                 source: new OSM(),

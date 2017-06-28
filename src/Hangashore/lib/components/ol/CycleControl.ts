@@ -29,7 +29,7 @@ class CycleControl<So, Si> extends Control {
     }
 }
 
-export function newControl<T, R>(component: (sources: T) => R, props: object = {}) {
+export function cycleControl<T, R>(component: (sources: T) => R, props: object = {}) {
     return new CycleControl(component, {
         props$: () => Observable.of(props),
     });
