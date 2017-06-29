@@ -17,6 +17,9 @@ import {
 } from 'openlayers';
 import {Observable} from 'rxjs';
 
+import {cycleControl} from './CycleControl';
+import {MapCenter} from './MapCenter';
+
 const {ScaleLine} = control;
 const {Style, Fill, Stroke, Circle} = style;
 const {Draw: DrawInteraction} = interaction;
@@ -49,7 +52,7 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
         zoom: 16,
     });
     const map = new OLMap({
-        controls: control.defaults().extend([new ScaleLine()]),
+        controls: control.defaults().extend([new ScaleLine(), cycleControl(MapCenter, {view, pos$})]),
         layers: [
             new TileLayer({
                 source: new OSM(),
@@ -110,9 +113,14 @@ export function OpenLayersMap({props$, pos$}: OpenLayersMapSources): OpenLayersM
         .filter(() => features.getLength() > 1)
         .subscribe(() => features.removeAt(0));
 
+    pos$
+        .first()
+        .subscribe(pos => {
+            view.setCenter(proj.fromLonLat(pos));
+        });
+
     pos$.subscribe(pos => {
         marker.setGeometry(new Point(proj.fromLonLat(pos)));
-        view.setCenter(proj.fromLonLat(pos));
     });
 
     return {

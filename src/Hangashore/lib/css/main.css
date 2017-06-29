@@ -130,3 +130,7 @@ h3, h4 {
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
+.map-control-center {
+    top: 4em;
+    left: .5em;
+}
