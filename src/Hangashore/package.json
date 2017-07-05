@@ -17,7 +17,7 @@
     "@lakemaps/schemas": "3.3.0",
     "hypercycle": "5.0.0",
     "openlayers": "4.1.1",
-    "rxjs": "5.4.0",
+    "rxjs": "5.4.2",
     "tachyons": "4.7.4",
     "xstream": "10.8.0"
   },
