@@ -41,7 +41,7 @@ const view = (props: RadioSetProps): VNode => {
 };
 
 export function RadioSet({dom, props$}: RadioSetSources): RadioSetSinks {
-    const initialSelected$ = props$.first()
+    const initialSelected$: Observable<string> = props$.first()
         .flatMap(({options}) => {
             const selected = options.find(({enabled, checked}) => Boolean(enabled && checked));
             return selected
