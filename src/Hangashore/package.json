@@ -11,11 +11,11 @@
     "test": "npm run build && tape test/**/*.js | tap-list"
   },
   "dependencies": {
-    "@cycle/dom": "17.3.0",
+    "@cycle/dom": "18.0.0",
     "@cycle/isolate": "2.1.0",
     "@cycle/rxjs-run": "7.0.0",
     "@lakemaps/schemas": "3.3.0",
-    "hypercycle": "5.0.0",
+    "hypercycle": "6.0.0",
     "openlayers": "4.1.1",
     "rxjs": "5.4.2",
     "tachyons": "4.7.4",
