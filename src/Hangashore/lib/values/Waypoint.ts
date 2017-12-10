@@ -1,4 +1,4 @@
-const {Waypoint: WaypointProtobuf, TypedMessage} = require(`@lakemaps/schemas`);
+import {TypedMessage, Waypoint as WaypointProtobuf} from '@lakemaps/schemas';
 
 export class Waypoint {
     static decode(buf: Buffer): Waypoint {

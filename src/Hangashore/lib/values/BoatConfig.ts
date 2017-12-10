@@ -1,15 +1,16 @@
+import {
+    BoatConfig as BoatConfigProtobuf, PidControllerGains as PidControllerGainsProtobuf, TypedMessage,
+} from '@lakemaps/schemas';
 import {PidControllerGains} from './PidControllerGains';
-
-const {
-    BoatConfig: BoatConfigProtobuf,
-    TypedMessage,
-    PidControllerGains: PidControllerGainsProtobuf,
-} = require(`@lakemaps/schemas`);
 
 export class BoatConfig {
     static decode(buf: Buffer): BoatConfig {
         const bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength / Uint8Array.BYTES_PER_ELEMENT);
         const obj = TypedMessage.deserializeBinary(bytes).getBoatConfig();
+        if (obj === null) {
+            throw new Error(`Missing BoatConfig field`);
+        }
+
         const surgeControllerGains = obj.getSurgeControllerGains();
         const surgeTimeStep = obj.getSurgeControllerDt();
         const yawControllerGains = obj.getYawControllerGains();
