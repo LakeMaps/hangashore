@@ -1,12 +1,15 @@
 import {Position} from './Position';
 import {Velocity} from './Velocity';
 
-const {Gps: GpsProtobuf, TypedMessage} = require(`@lakemaps/schemas`);
+import {Gps as GpsProtobuf, TypedMessage} from '@lakemaps/schemas';
 
 export class Gps {
     static decode(buf: Buffer): Gps {
         const bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength / Uint8Array.BYTES_PER_ELEMENT);
         const obj = TypedMessage.deserializeBinary(bytes).getGps();
+        if (obj === null) {
+            throw new Error(`Missing GPS field`);
+        }
         return new Gps(
             obj.getHorizontalDilutionOfPrecision(),
             Position.fromMessage(obj.getPosition()),

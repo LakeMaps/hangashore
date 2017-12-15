@@ -1,4 +1,4 @@
-const {TypedMessage: TypedMessageProtobuf} = require(`@lakemaps/schemas`);
+import {TypedMessage as TypedMessageProtobuf} from '@lakemaps/schemas';
 
 export class TypedMessage {
     static decode(buf: Buffer): TypedMessage {

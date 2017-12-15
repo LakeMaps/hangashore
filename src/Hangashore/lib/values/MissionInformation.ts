@@ -1,9 +1,13 @@
-const {MissionInformation: MissionInformationProtobuf, TypedMessage} = require(`@lakemaps/schemas`);
+import {MissionInformation as MissionInformationProtobuf, TypedMessage} from '@lakemaps/schemas';
 
 export class MissionInformation {
     static decode(buf: Buffer): MissionInformation {
         const bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength / Uint8Array.BYTES_PER_ELEMENT);
         const obj = TypedMessage.deserializeBinary(bytes).getMissionInformation();
+        if (obj === null) {
+            throw new Error(`Missing MissionInformation field`);
+        }
+
         return new MissionInformation(obj.getDistanceToWaypoint());
     }
 

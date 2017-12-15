@@ -1,4 +1,4 @@
-const {Velocity: VelocityProtobuf} = require(`@lakemaps/schemas`);
+import {Velocity as VelocityProtobuf} from '@lakemaps/schemas';
 
 export class Velocity {
     static decode(buf: Buffer): Velocity {

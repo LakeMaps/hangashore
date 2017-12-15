@@ -1,4 +1,4 @@
-const {Motion: MotionProtobuf, TypedMessage} = require(`@lakemaps/schemas`);
+import {Motion as MotionProtobuf, TypedMessage} from '@lakemaps/schemas';
 
 export class Motion {
     static decode(buf: Buffer): Motion {

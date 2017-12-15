@@ -1,9 +1,9 @@
-const {ControlMode: ControlModeProtobuf, TypedMessage} = require(`@lakemaps/schemas`);
+import {ControlMode as ControlModeProtobuf, TypedMessage} from '@lakemaps/schemas';
 
 export class ControlMode {
-    static readonly WAYPOINT = new ControlMode(`WAYPOINT`);
+    static readonly WAYPOINT = new ControlMode(ControlModeProtobuf.Mode.WAYPOINT);
 
-    static readonly MANUAL = new ControlMode(`MANUAL`);
+    static readonly MANUAL = new ControlMode(ControlModeProtobuf.Mode.MANUAL);
 
     static from(name: string): ControlMode {
         if ((<any> ControlMode)[name]) {
@@ -15,9 +15,9 @@ export class ControlMode {
 
     private message: any;
 
-    private constructor(private readonly name: string) {
+    private constructor(private readonly mode: ControlModeProtobuf.Mode) {
         const controlMode = new ControlModeProtobuf();
-        controlMode.setMode(ControlModeProtobuf.Mode[this.name]);
+        controlMode.setMode(mode);
         this.message = new TypedMessage();
         this.message.setType(TypedMessage.Type.CONTROL_MODE);
         this.message.setControlMode(controlMode);
@@ -28,6 +28,6 @@ export class ControlMode {
     }
 
     toString() {
-        return this.name;
+        return Object.keys(ControlModeProtobuf.Mode)[this.mode];
     }
 }

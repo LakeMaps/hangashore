@@ -1,4 +1,4 @@
-const {Position: PositionProtobuf} = require(`@lakemaps/schemas`);
+import {Position as PositionProtobuf} from '@lakemaps/schemas';
 
 export class Position {
     static decode(buf: Buffer): Position {
