@@ -24,7 +24,7 @@ matrix:
         - node_js: "6"
           os: osx
 before_install:
-    - npm i -g npm@5.2.0
+    - npm i -g npm@5
 install:
     - .travis/install
 script:
