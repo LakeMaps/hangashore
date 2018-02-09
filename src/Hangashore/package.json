@@ -28,6 +28,6 @@
     "tap-list": "1.0.1",
     "tape": "4.6.3",
     "tslint": "4.5.1",
-    "typescript": "2.6.2"
+    "typescript": "2.7.1"
   }
 }
